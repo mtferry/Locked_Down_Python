@@ -268,6 +268,8 @@ static PyObject *
 winreg_HKEYType_Close_impl(PyHKEYObject *self)
 /*[clinic end generated code: output=fced3a624fb0c344 input=6786ac75f6b89de6]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (!PyHKEY_Close((PyObject *)self))
         return NULL;
     Py_RETURN_NONE;
@@ -291,6 +293,8 @@ static PyObject *
 winreg_HKEYType_Detach_impl(PyHKEYObject *self)
 /*[clinic end generated code: output=dda5a9e1a01ae78f input=dd2cc09e6c6ba833]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     void* ret;
     ret = (void*)self->hkey;
     self->hkey = 0;
@@ -305,6 +309,8 @@ static PyHKEYObject *
 winreg_HKEYType___enter___impl(PyHKEYObject *self)
 /*[clinic end generated code: output=52c34986dab28990 input=c40fab1f0690a8e2]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     Py_XINCREF(self);
     return self;
 }
@@ -323,6 +329,8 @@ winreg_HKEYType___exit___impl(PyHKEYObject *self, PyObject *exc_type,
                               PyObject *exc_value, PyObject *traceback)
 /*[clinic end generated code: output=923ebe7389e6a263 input=fb32489ee92403c7]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (!PyHKEY_Close((PyObject *)self))
         return NULL;
     Py_RETURN_NONE;
@@ -826,6 +834,8 @@ winreg_ConnectRegistry_impl(PyObject *module, Py_UNICODE *computer_name,
                             HKEY key)
 /*[clinic end generated code: output=5ab79d02aa3167b4 input=5f98a891a347e68e]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     HKEY retKey;
     long rc;
     Py_BEGIN_ALLOW_THREADS
@@ -862,6 +872,8 @@ static HKEY
 winreg_CreateKey_impl(PyObject *module, HKEY key, Py_UNICODE *sub_key)
 /*[clinic end generated code: output=9c81d4095527c927 input=3cdd1622488acea2]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED
+
     HKEY retKey;
     long rc;
 
@@ -902,6 +914,8 @@ winreg_CreateKeyEx_impl(PyObject *module, HKEY key, Py_UNICODE *sub_key,
                         int reserved, REGSAM access)
 /*[clinic end generated code: output=b9fce6dc5c4e39b1 input=42c2b03f98406b66]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     HKEY retKey;
     long rc;
 
@@ -936,6 +950,8 @@ static PyObject *
 winreg_DeleteKey_impl(PyObject *module, HKEY key, Py_UNICODE *sub_key)
 /*[clinic end generated code: output=7734b1e431991ae4 input=b31d225b935e4211]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     long rc;
     rc = RegDeleteKeyW(key, sub_key );
     if (rc != ERROR_SUCCESS)
@@ -972,6 +988,8 @@ winreg_DeleteKeyEx_impl(PyObject *module, HKEY key, Py_UNICODE *sub_key,
                         REGSAM access, int reserved)
 /*[clinic end generated code: output=01378d86ad3eb936 input=711d9d89e7ecbed7]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     HMODULE hMod;
     typedef LONG (WINAPI *RDKEFunc)(HKEY, const wchar_t*, REGSAM, int);
     RDKEFunc pfn = NULL;
@@ -1013,6 +1031,8 @@ static PyObject *
 winreg_DeleteValue_impl(PyObject *module, HKEY key, Py_UNICODE *value)
 /*[clinic end generated code: output=67e7e9a514f84951 input=a78d3407a4197b21]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     long rc;
     Py_BEGIN_ALLOW_THREADS
     rc = RegDeleteValueW(key, value);
@@ -1043,6 +1063,8 @@ static PyObject *
 winreg_EnumKey_impl(PyObject *module, HKEY key, int index)
 /*[clinic end generated code: output=25a6ec52cd147bc4 input=fad9a7c00ab0e04b]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     long rc;
     PyObject *retStr;
 
@@ -1094,6 +1116,8 @@ static PyObject *
 winreg_EnumValue_impl(PyObject *module, HKEY key, int index)
 /*[clinic end generated code: output=d363b5a06f8789ac input=4414f47a6fb238b5]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     long rc;
     wchar_t *retValueBuf;
     BYTE *tmpBuf;
@@ -1181,6 +1205,8 @@ static PyObject *
 winreg_ExpandEnvironmentStrings_impl(PyObject *module, Py_UNICODE *string)
 /*[clinic end generated code: output=cba46ac293a8af1a input=b2a9714d2b751aa6]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     wchar_t *retValue = NULL;
     DWORD retValueSize;
     DWORD rc;
@@ -1231,6 +1257,8 @@ static PyObject *
 winreg_FlushKey_impl(PyObject *module, HKEY key)
 /*[clinic end generated code: output=e6fc230d4c5dc049 input=f57457c12297d82f]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     long rc;
     Py_BEGIN_ALLOW_THREADS
     rc = RegFlushKey(key);
@@ -1275,6 +1303,8 @@ winreg_LoadKey_impl(PyObject *module, HKEY key, Py_UNICODE *sub_key,
                     Py_UNICODE *file_name)
 /*[clinic end generated code: output=87344005c5905cde input=e3b5b45ade311582]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     long rc;
 
     Py_BEGIN_ALLOW_THREADS
@@ -1309,6 +1339,8 @@ winreg_OpenKey_impl(PyObject *module, HKEY key, Py_UNICODE *sub_key,
                     int reserved, REGSAM access)
 /*[clinic end generated code: output=a905f1b947f3ce85 input=098505ac36a9ae28]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     HKEY retKey;
     long rc;
 
@@ -1359,6 +1391,8 @@ static PyObject *
 winreg_QueryInfoKey_impl(PyObject *module, HKEY key)
 /*[clinic end generated code: output=dc657b8356a4f438 input=c3593802390cde1f]*/
 {
+  RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
   long rc;
   DWORD nSubKeys, nValues;
   FILETIME ft;
@@ -1405,6 +1439,8 @@ static PyObject *
 winreg_QueryValue_impl(PyObject *module, HKEY key, Py_UNICODE *sub_key)
 /*[clinic end generated code: output=2bb8d1e02c10d0b6 input=41cafbbf423b21d6]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     long rc;
     PyObject *retStr;
     wchar_t *retBuf;
@@ -1472,6 +1508,8 @@ static PyObject *
 winreg_QueryValueEx_impl(PyObject *module, HKEY key, Py_UNICODE *name)
 /*[clinic end generated code: output=5b4fa3e33d6d3e8f input=cf366cada4836891]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     long rc;
     BYTE *retBuf, *tmp;
     DWORD bufSize = 0, retSize;
@@ -1545,6 +1583,8 @@ static PyObject *
 winreg_SaveKey_impl(PyObject *module, HKEY key, Py_UNICODE *file_name)
 /*[clinic end generated code: output=1dda1502bd4c30d8 input=da735241f91ac7a2]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     LPSECURITY_ATTRIBUTES pSA = NULL;
 
     long rc;
@@ -1593,6 +1633,8 @@ winreg_SetValue_impl(PyObject *module, HKEY key, Py_UNICODE *sub_key,
                      Py_ssize_clean_t value_length)
 /*[clinic end generated code: output=1e31931174820631 input=2cd2adab79339c53]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     long rc;
 
     if (type != REG_SZ) {
@@ -1658,6 +1700,8 @@ winreg_SetValueEx_impl(PyObject *module, HKEY key, Py_UNICODE *value_name,
                        PyObject *reserved, DWORD type, PyObject *value)
 /*[clinic end generated code: output=c88c8426b6c00ec7 input=900a9e3990bfb196]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     BYTE *data;
     DWORD len;
 
@@ -1700,6 +1744,8 @@ static PyObject *
 winreg_DisableReflectionKey_impl(PyObject *module, HKEY key)
 /*[clinic end generated code: output=830cce504cc764b4 input=a6c9e5ca5410193c]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     HMODULE hMod;
     typedef LONG (WINAPI *RDRKFunc)(HKEY);
     RDRKFunc pfn = NULL;
@@ -1743,6 +1789,8 @@ static PyObject *
 winreg_EnableReflectionKey_impl(PyObject *module, HKEY key)
 /*[clinic end generated code: output=86fa1385fdd9ce57 input=7748abbacd1e166a]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     HMODULE hMod;
     typedef LONG (WINAPI *RERKFunc)(HKEY);
     RERKFunc pfn = NULL;
@@ -1784,6 +1832,8 @@ static PyObject *
 winreg_QueryReflectionKey_impl(PyObject *module, HKEY key)
 /*[clinic end generated code: output=4e774af288c3ebb9 input=9f325eacb5a65d88]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     HMODULE hMod;
     typedef LONG (WINAPI *RQRKFunc)(HKEY, BOOL *);
     RQRKFunc pfn = NULL;
