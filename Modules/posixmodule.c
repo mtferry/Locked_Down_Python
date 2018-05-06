@@ -2468,6 +2468,7 @@ static PyObject *
 os_stat_impl(PyObject *module, path_t *path, int dir_fd, int follow_symlinks)
 /*[clinic end generated code: output=7d4976e6f18a59c5 input=270bd64e7bb3c8f7]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     return posix_do_stat("stat", path, dir_fd, follow_symlinks);
 }
 
@@ -2491,6 +2492,7 @@ static PyObject *
 os_lstat_impl(PyObject *module, path_t *path, int dir_fd)
 /*[clinic end generated code: output=ef82a5d35ce8ab37 input=0b7474765927b925]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     int follow_symlinks = 0;
     return posix_do_stat("lstat", path, dir_fd, follow_symlinks);
 }
@@ -2540,6 +2542,8 @@ os_access_impl(PyObject *module, path_t *path, int mode, int dir_fd,
                int effective_ids, int follow_symlinks)
 /*[clinic end generated code: output=cf84158bc90b1a77 input=8e8c3a6ba791fee3]*/
 {
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1);
+  
     int return_value;
 
 #ifdef MS_WINDOWS
@@ -2629,6 +2633,8 @@ static char *
 os_ttyname_impl(PyObject *module, int fd)
 /*[clinic end generated code: output=ed16ad216d813591 input=5f72ca83e76b3b45]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     char *ret;
 
     ret = ttyname(fd);
@@ -2951,6 +2957,8 @@ os_chflags_impl(PyObject *module, path_t *path, unsigned long flags,
                 int follow_symlinks)
 /*[clinic end generated code: output=85571c6737661ce9 input=0327e29feb876236]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int result;
 
 #ifndef HAVE_LCHFLAGS
@@ -2992,6 +3000,8 @@ static PyObject *
 os_lchflags_impl(PyObject *module, path_t *path, unsigned long flags)
 /*[clinic end generated code: output=30ae958695c07316 input=f9f82ea8b585ca9d]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int res;
     Py_BEGIN_ALLOW_THREADS
     res = lchflags(path->narrow, flags);
@@ -3017,6 +3027,8 @@ static PyObject *
 os_chroot_impl(PyObject *module, path_t *path)
 /*[clinic end generated code: output=de80befc763a4475 input=14822965652c3dc3]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int res;
     Py_BEGIN_ALLOW_THREADS
     res = chroot(path->narrow);
@@ -3132,6 +3144,8 @@ os_chown_impl(PyObject *module, path_t *path, uid_t uid, gid_t gid,
               int dir_fd, int follow_symlinks)
 /*[clinic end generated code: output=4beadab0db5f70cd input=a61cc35574814d5d]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int result;
 
 #if !(defined(HAVE_LCHOWN) || defined(HAVE_FCHOWNAT))
@@ -3201,6 +3215,8 @@ static PyObject *
 os_fchown_impl(PyObject *module, int fd, uid_t uid, gid_t gid)
 /*[clinic end generated code: output=97d21cbd5a4350a6 input=3af544ba1b13a0d7]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int res;
     int async_err = 0;
 
@@ -3235,6 +3251,8 @@ static PyObject *
 os_lchown_impl(PyObject *module, path_t *path, uid_t uid, gid_t gid)
 /*[clinic end generated code: output=25eaf6af412fdf2f input=b1c6014d563a7161]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int res;
     Py_BEGIN_ALLOW_THREADS
     res = lchown(path->narrow, uid, gid);
@@ -3394,6 +3412,8 @@ os_link_impl(PyObject *module, path_t *src, path_t *dst, int src_dir_fd,
              int dst_dir_fd, int follow_symlinks)
 /*[clinic end generated code: output=7f00f6007fd5269a input=b0095ebbcbaa7e04]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
 #ifdef MS_WINDOWS
     BOOL result = FALSE;
 #else
@@ -3909,6 +3929,8 @@ static PyObject *
 os_mkdir_impl(PyObject *module, path_t *path, int mode, int dir_fd)
 /*[clinic end generated code: output=a70446903abe821f input=e965f68377e9b1ce]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int result;
 
 #ifdef MS_WINDOWS
@@ -3958,6 +3980,8 @@ static PyObject *
 os_nice_impl(PyObject *module, int increment)
 /*[clinic end generated code: output=9dad8a9da8109943 input=864be2d402a21da2]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int value;
 
     /* There are two flavours of 'nice': one that returns the new
@@ -3998,6 +4022,8 @@ static PyObject *
 os_getpriority_impl(PyObject *module, int which, int who)
 /*[clinic end generated code: output=c41b7b63c7420228 input=9be615d40e2544ef]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int retval;
 
     errno = 0;
@@ -4024,6 +4050,8 @@ static PyObject *
 os_setpriority_impl(PyObject *module, int which, int who, int priority)
 /*[clinic end generated code: output=3d910d95a7771eb2 input=710ccbf65b9dc513]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int retval;
 
     retval = setpriority(which, who, priority);
@@ -4037,6 +4065,8 @@ os_setpriority_impl(PyObject *module, int which, int who, int priority)
 static PyObject *
 internal_rename(path_t *src, path_t *dst, int src_dir_fd, int dst_dir_fd, int is_replace)
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     const char *function_name = is_replace ? "replace" : "rename";
     int dir_fd_specified;
 
@@ -4193,7 +4223,7 @@ static long
 os_system_impl(PyObject *module, Py_UNICODE *command)
 /*[clinic end generated code: output=96c4dffee36dfb48 input=303f5ce97df606b0]*/
 {
-    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(0);
 
     long result;
     Py_BEGIN_ALLOW_THREADS
@@ -5265,6 +5295,8 @@ os_posix_spawn_impl(PyObject *module, path_t *path, PyObject *argv,
                     PyObject *env, PyObject *file_actions)
 /*[clinic end generated code: output=d023521f541c709c input=a3db1021d33230dc]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     EXECV_CHAR **argvlist = NULL;
     EXECV_CHAR **envlist = NULL;
     posix_spawn_file_actions_t file_actions_buf;
@@ -7365,6 +7397,8 @@ dir_fd may not be implemented on your platform.\n\
 static PyObject *
 posix_readlink(PyObject *self, PyObject *args, PyObject *kwargs)
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     path_t path;
     int dir_fd = DEFAULT_DIR_FD;
     char buffer[MAXPATHLEN+1];
@@ -7410,6 +7444,8 @@ exit:
 static PyObject *
 win_readlink(PyObject *self, PyObject *args, PyObject *kwargs)
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     const wchar_t *path;
     DWORD n_bytes_returned;
     DWORD io_result;
@@ -7603,6 +7639,8 @@ os_symlink_impl(PyObject *module, path_t *src, path_t *dst,
                 int target_is_directory, int dir_fd)
 /*[clinic end generated code: output=08ca9f3f3cf960f6 input=e820ec4472547bc3]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
 #ifdef MS_WINDOWS
     DWORD result;
 #else
@@ -7921,6 +7959,8 @@ static int
 os_open_impl(PyObject *module, path_t *path, int flags, int mode, int dir_fd)
 /*[clinic end generated code: output=abc7227888c8bc73 input=ad8623b29acd2934]*/
 {
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1);
+  
     int fd;
     int async_err = 0;
 

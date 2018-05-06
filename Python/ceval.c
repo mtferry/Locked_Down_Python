@@ -4852,12 +4852,8 @@ import_all_from(PyObject *locals, PyObject *v)
     int skip_leading_underscores = 0;
     int pos, err;
 
-    if (lockdown_is_enabled)
-    {
-      PyErr_SetString(PyExc_RuntimeError, LOCKDOWN_EXCEPTION_STRING);
-      return -1;
-    }
-    
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1);
+
     if (_PyObject_LookupAttrId(v, &PyId___all__, &all) < 0) {
         return -1; /* Unexpected error */
     }
