@@ -137,4 +137,6 @@
 #include "fileutils.h"
 #include "pyfpe.h"
 
+int lockdown_is_enabled;
+
 #endif /* !Py_PYTHON_H */

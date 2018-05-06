@@ -4736,6 +4736,12 @@ import_name(PyFrameObject *f, PyObject *name, PyObject *fromlist, PyObject *leve
     PyObject *import_func, *res;
     PyObject* stack[5];
 
+    if (lockdown_is_enabled)
+    {
+      PyErr_SetString(PyExc_RuntimeError, "can't import when lockdown is enabled");
+      return NULL;
+    }
+    
     import_func = _PyDict_GetItemId(f->f_builtins, &PyId___import__);
     if (import_func == NULL) {
         PyErr_SetString(PyExc_ImportError, "__import__ not found");
@@ -4776,6 +4782,12 @@ import_from(PyObject *v, PyObject *name)
     _Py_IDENTIFIER(__name__);
     PyObject *fullmodname, *pkgname, *pkgpath, *pkgname_or_unknown, *errmsg;
 
+    if (lockdown_is_enabled)
+    {
+      PyErr_SetString(PyExc_RuntimeError, "can't import when lockdown is enabled");
+      return NULL;
+    }
+    
     if (_PyObject_LookupAttr(v, name, &x) != 0) {
         return x;
     }
@@ -4848,6 +4860,12 @@ import_all_from(PyObject *locals, PyObject *v)
     int skip_leading_underscores = 0;
     int pos, err;
 
+    if (lockdown_is_enabled)
+    {
+      PyErr_SetString(PyExc_RuntimeError, "can't import when lockdown is enabled");
+      return -1;
+    }
+    
     if (_PyObject_LookupAttrId(v, &PyId___all__, &all) < 0) {
         return -1; /* Unexpected error */
     }

@@ -1157,6 +1157,19 @@ builtin_globals_impl(PyObject *module)
     return d;
 }
 
+/*[clinic input]
+lockdown as builtin_lockdown
+
+Make a one-way transition into a locked down state.
+[clinic start generated code]*/
+
+static PyObject *
+builtin_lockdown_impl(PyObject *module)
+/*[clinic end generated code: output=e5dd1527067b94d2 input=9327576f92bb48ba]*/
+{
+    lockdown_is_enabled = 1;
+    Py_RETURN_NONE;
+}
 
 /*[clinic input]
 hasattr as builtin_hasattr
@@ -2741,6 +2754,7 @@ static PyMethodDef builtin_methods[] = {
     BUILTIN_FORMAT_METHODDEF
     {"getattr",         (PyCFunction)builtin_getattr, METH_FASTCALL, getattr_doc},
     BUILTIN_GLOBALS_METHODDEF
+    BUILTIN_LOCKDOWN_METHODDEF
     BUILTIN_HASATTR_METHODDEF
     BUILTIN_HASH_METHODDEF
     BUILTIN_HEX_METHODDEF
