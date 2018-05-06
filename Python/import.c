@@ -1686,7 +1686,7 @@ PyImport_ImportModuleLevelObject(PyObject *name, PyObject *globals,
 
     if (lockdown_is_enabled)
     {
-      PyErr_SetString(PyExc_RuntimeError, "lockdown is enabled");
+      PyErr_SetString(PyExc_RuntimeError, LOCKDOWN_EXCEPTION_STRING);
       goto error;
     }
     
@@ -1728,7 +1728,7 @@ PyImport_ImportModuleLevelObject(PyObject *name, PyObject *globals,
     if (mod != NULL && mod != Py_None) {
         if (lockdown_is_enabled)
         {
-          PyErr_SetString(PyExc_RuntimeError, "lockdown is enabled");
+          PyErr_SetString(PyExc_RuntimeError, LOCKDOWN_EXCEPTION_STRING);
           goto error;
         }
       

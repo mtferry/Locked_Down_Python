@@ -2649,6 +2649,8 @@ static PyObject *
 os_ctermid_impl(PyObject *module)
 /*[clinic end generated code: output=02f017e6c9e620db input=3b87fdd52556382d]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     char *ret;
     char buffer[L_ctermid];
 
@@ -2680,6 +2682,8 @@ static PyObject *
 os_chdir_impl(PyObject *module, path_t *path)
 /*[clinic end generated code: output=3be6400eee26eaae input=1a4a15b4d12cb15d]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int result;
 
     Py_BEGIN_ALLOW_THREADS
@@ -2721,6 +2725,7 @@ static PyObject *
 os_fchdir_impl(PyObject *module, int fd)
 /*[clinic end generated code: output=42e064ec4dc00ab0 input=18e816479a2fa985]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     return posix_fildes_fd(fd, fchdir);
 }
 #endif /* HAVE_FCHDIR */
@@ -2763,6 +2768,8 @@ os_chmod_impl(PyObject *module, path_t *path, int mode, int dir_fd,
               int follow_symlinks)
 /*[clinic end generated code: output=5cf6a94915cc7bff input=7f1618e5e15cc196]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int result;
 
 #ifdef MS_WINDOWS
@@ -2871,6 +2878,8 @@ static PyObject *
 os_fchmod_impl(PyObject *module, int fd, int mode)
 /*[clinic end generated code: output=afd9bc05b4e426b3 input=8ab11975ca01ee5b]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int res;
     int async_err = 0;
 
@@ -2904,6 +2913,8 @@ static PyObject *
 os_lchmod_impl(PyObject *module, path_t *path, int mode)
 /*[clinic end generated code: output=082344022b51a1d5 input=90c5663c7465d24f]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int res;
     Py_BEGIN_ALLOW_THREADS
     res = lchmod(path->narrow, mode);
@@ -3239,6 +3250,8 @@ os_lchown_impl(PyObject *module, path_t *path, uid_t uid, gid_t gid)
 static PyObject *
 posix_getcwd(int use_bytes)
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+  
     char *buf, *tmpbuf;
     char *cwd;
     const size_t chunk = 1024;
@@ -3664,6 +3677,8 @@ static PyObject *
 os_listdir_impl(PyObject *module, path_t *path)
 /*[clinic end generated code: output=293045673fcd1a75 input=09e300416e3cd729]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+  
 #if defined(MS_WINDOWS) && !defined(HAVE_OPENDIR)
     return _listdir_windows_no_opendir(path, NULL);
 #else
@@ -4139,6 +4154,8 @@ static PyObject *
 os_rmdir_impl(PyObject *module, path_t *path, int dir_fd)
 /*[clinic end generated code: output=080eb54f506e8301 input=38c8b375ca34a7e2]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int result;
 
     Py_BEGIN_ALLOW_THREADS
@@ -4176,6 +4193,8 @@ static long
 os_system_impl(PyObject *module, Py_UNICODE *command)
 /*[clinic end generated code: output=96c4dffee36dfb48 input=303f5ce97df606b0]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     long result;
     Py_BEGIN_ALLOW_THREADS
     _Py_BEGIN_SUPPRESS_IPH
@@ -4197,6 +4216,8 @@ static long
 os_system_impl(PyObject *module, PyObject *command)
 /*[clinic end generated code: output=290fc437dd4f33a0 input=86a58554ba6094af]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     long result;
     const char *bytes = PyBytes_AsString(command);
     Py_BEGIN_ALLOW_THREADS
@@ -4221,6 +4242,8 @@ static PyObject *
 os_umask_impl(PyObject *module, int mask)
 /*[clinic end generated code: output=a2e33ce3bc1a6e33 input=ab6bfd9b24d8a7e8]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int i = (int)umask(mask);
     if (i < 0)
         return posix_error();
@@ -4287,6 +4310,8 @@ static PyObject *
 os_unlink_impl(PyObject *module, path_t *path, int dir_fd)
 /*[clinic end generated code: output=621797807b9963b1 input=d7bcde2b1b2a2552]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int result;
 
     Py_BEGIN_ALLOW_THREADS
@@ -9406,6 +9431,8 @@ static PyObject *
 os_putenv_impl(PyObject *module, PyObject *name, PyObject *value)
 /*[clinic end generated code: output=d29a567d6b2327d2 input=ba586581c2e6105f]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+  
     const wchar_t *env;
     Py_ssize_t size;
 
@@ -9463,6 +9490,8 @@ static PyObject *
 os_putenv_impl(PyObject *module, PyObject *name, PyObject *value)
 /*[clinic end generated code: output=d29a567d6b2327d2 input=a97bc6152f688d31]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+  
     PyObject *bytes = NULL;
     char *env;
     const char *name_string = PyBytes_AS_STRING(name);
@@ -9503,6 +9532,8 @@ static PyObject *
 os_unsetenv_impl(PyObject *module, PyObject *name)
 /*[clinic end generated code: output=54c4137ab1834f02 input=2bb5288a599c7107]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
 #ifndef HAVE_BROKEN_UNSETENV
     int err;
 #endif

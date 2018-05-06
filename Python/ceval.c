@@ -4736,11 +4736,7 @@ import_name(PyFrameObject *f, PyObject *name, PyObject *fromlist, PyObject *leve
     PyObject *import_func, *res;
     PyObject* stack[5];
 
-    if (lockdown_is_enabled)
-    {
-      PyErr_SetString(PyExc_RuntimeError, "lockdown is enabled");
-      return NULL;
-    }
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     
     import_func = _PyDict_GetItemId(f->f_builtins, &PyId___import__);
     if (import_func == NULL) {
@@ -4782,11 +4778,7 @@ import_from(PyObject *v, PyObject *name)
     _Py_IDENTIFIER(__name__);
     PyObject *fullmodname, *pkgname, *pkgpath, *pkgname_or_unknown, *errmsg;
 
-    if (lockdown_is_enabled)
-    {
-      PyErr_SetString(PyExc_RuntimeError, "lockdown is enabled");
-      return NULL;
-    }
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED
     
     if (_PyObject_LookupAttr(v, name, &x) != 0) {
         return x;
@@ -4862,7 +4854,7 @@ import_all_from(PyObject *locals, PyObject *v)
 
     if (lockdown_is_enabled)
     {
-      PyErr_SetString(PyExc_RuntimeError, "lockdown is enabled");
+      PyErr_SetString(PyExc_RuntimeError, LOCKDOWN_EXCEPTION_STRING);
       return -1;
     }
     
