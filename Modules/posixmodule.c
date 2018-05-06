@@ -3720,6 +3720,8 @@ static PyObject *
 os__getfullpathname_impl(PyObject *module, path_t *path)
 /*[clinic end generated code: output=bb8679d56845bc9b input=332ed537c29d0a3e]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     wchar_t woutbuf[MAX_PATH], *woutbufp = woutbuf;
     wchar_t *wtemp;
     DWORD result;
@@ -3759,6 +3761,8 @@ static PyObject *
 os__getfinalpathname_impl(PyObject *module, path_t *path)
 /*[clinic end generated code: output=621a3c79bc29ebfa input=2b6b6c7cbad5fb84]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     HANDLE hFile;
     wchar_t buf[MAXPATHLEN], *target_path = buf;
     int buf_size = Py_ARRAY_LENGTH(buf);
@@ -3836,6 +3840,8 @@ static PyObject *
 os__isdir_impl(PyObject *module, path_t *path)
 /*[clinic end generated code: output=75f56f32720836cb input=5e0800149c0ad95f]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     DWORD attributes;
 
     Py_BEGIN_ALLOW_THREADS
@@ -3864,6 +3870,8 @@ static PyObject *
 os__getvolumepathname_impl(PyObject *module, path_t *path)
 /*[clinic end generated code: output=804c63fd13a1330b input=722b40565fa21552]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     PyObject *result;
     wchar_t *mountpath=NULL;
     size_t buflen;
@@ -4428,6 +4436,8 @@ static PyObject *
 os_uname_impl(PyObject *module)
 /*[clinic end generated code: output=e6a49cf1a1508a19 input=e68bd246db3043ed]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     struct utsname u;
     int res;
     PyObject *value;
@@ -4679,6 +4689,8 @@ os_utime_impl(PyObject *module, path_t *path, PyObject *times, PyObject *ns,
               int dir_fd, int follow_symlinks)
 /*[clinic end generated code: output=cfcac69d027b82cf input=081cdc54ca685385]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
 #ifdef MS_WINDOWS
     HANDLE hFile;
     FILETIME atime, mtime;
@@ -5036,6 +5048,8 @@ static PyObject *
 os_execv_impl(PyObject *module, path_t *path, PyObject *argv)
 /*[clinic end generated code: output=3b52fec34cd0dafd input=9bac31efae07dac7]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     EXECV_CHAR **argvlist;
     Py_ssize_t argc;
 
@@ -5096,6 +5110,8 @@ static PyObject *
 os_execve_impl(PyObject *module, path_t *path, PyObject *argv, PyObject *env)
 /*[clinic end generated code: output=ff9fa8e4da8bde58 input=626804fa092606d9]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     EXECV_CHAR **argvlist = NULL;
     EXECV_CHAR **envlist;
     Py_ssize_t argc, envc;
@@ -5394,6 +5410,8 @@ static PyObject *
 os_spawnv_impl(PyObject *module, int mode, path_t *path, PyObject *argv)
 /*[clinic end generated code: output=71cd037a9d96b816 input=43224242303291be]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     EXECV_CHAR **argvlist;
     int i;
     Py_ssize_t argc;
@@ -5487,6 +5505,8 @@ os_spawnve_impl(PyObject *module, int mode, path_t *path, PyObject *argv,
                 PyObject *env)
 /*[clinic end generated code: output=30fe85be56fe37ad input=3e40803ee7c4c586]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     EXECV_CHAR **argvlist;
     EXECV_CHAR **envlist;
     PyObject *res = NULL;
@@ -5619,6 +5639,8 @@ os_register_at_fork_impl(PyObject *module, PyObject *before,
                          PyObject *after_in_child, PyObject *after_in_parent)
 /*[clinic end generated code: output=5398ac75e8e97625 input=cd1187aa85d2312e]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     PyInterpreterState *interp;
 
     if (!before && !after_in_child && !after_in_parent) {
@@ -5659,6 +5681,8 @@ static PyObject *
 os_fork1_impl(PyObject *module)
 /*[clinic end generated code: output=0de8e67ce2a310bc input=12db02167893926e]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     pid_t pid;
 
     PyOS_BeforeFork();
@@ -5690,6 +5714,8 @@ static PyObject *
 os_fork_impl(PyObject *module)
 /*[clinic end generated code: output=3626c81f98985d49 input=13c956413110eeaa]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     pid_t pid;
 
     PyOS_BeforeFork();
@@ -5722,6 +5748,8 @@ static PyObject *
 os_sched_get_priority_max_impl(PyObject *module, int policy)
 /*[clinic end generated code: output=9e465c6e43130521 input=2097b7998eca6874]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int max;
 
     max = sched_get_priority_max(policy);
@@ -5743,6 +5771,8 @@ static PyObject *
 os_sched_get_priority_min_impl(PyObject *module, int policy)
 /*[clinic end generated code: output=7595c1138cc47a6d input=21bc8fa0d70983bf]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int min = sched_get_priority_min(policy);
     if (min < 0)
         return posix_error();
@@ -5766,6 +5796,8 @@ static PyObject *
 os_sched_getscheduler_impl(PyObject *module, pid_t pid)
 /*[clinic end generated code: output=dce4c0bd3f1b34c8 input=5f14cfd1f189e1a0]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int policy;
 
     policy = sched_getscheduler(pid);
@@ -5793,6 +5825,8 @@ static PyObject *
 os_sched_param_impl(PyTypeObject *type, PyObject *sched_priority)
 /*[clinic end generated code: output=48f4067d60f48c13 input=73a4c22f7071fc62]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     PyObject *res;
 
     res = PyStructSequence_New(type);
@@ -5860,6 +5894,8 @@ os_sched_setscheduler_impl(PyObject *module, pid_t pid, int policy,
                            struct sched_param *param)
 /*[clinic end generated code: output=b0ac0a70d3b1d705 input=c581f9469a5327dd]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     /*
     ** sched_setscheduler() returns 0 in Linux, but the previous
     ** scheduling policy under Solaris/Illumos, and others.
@@ -5888,6 +5924,8 @@ static PyObject *
 os_sched_getparam_impl(PyObject *module, pid_t pid)
 /*[clinic end generated code: output=b194e8708dcf2db8 input=18a1ef9c2efae296]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     struct sched_param param;
     PyObject *result;
     PyObject *priority;
@@ -5924,6 +5962,8 @@ os_sched_setparam_impl(PyObject *module, pid_t pid,
                        struct sched_param *param)
 /*[clinic end generated code: output=8af013f78a32b591 input=6b8d6dfcecdc21bd]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (sched_setparam(pid, param))
         return posix_error();
     Py_RETURN_NONE;
@@ -5946,6 +5986,8 @@ static double
 os_sched_rr_get_interval_impl(PyObject *module, pid_t pid)
 /*[clinic end generated code: output=7e2d935833ab47dc input=2a973da15cca6fae]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     struct timespec interval;
     if (sched_rr_get_interval(pid, &interval)) {
         posix_error();
@@ -5990,6 +6032,8 @@ static PyObject *
 os_sched_setaffinity_impl(PyObject *module, pid_t pid, PyObject *mask)
 /*[clinic end generated code: output=882d7dd9a229335b input=a0791a597c7085ba]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int ncpus;
     size_t setsize;
     cpu_set_t *cpu_set = NULL;
@@ -6086,6 +6130,8 @@ static PyObject *
 os_sched_getaffinity_impl(PyObject *module, pid_t pid)
 /*[clinic end generated code: output=f726f2c193c17a4f input=983ce7cb4a565980]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int cpu, ncpus, count;
     size_t setsize;
     cpu_set_t *mask = NULL;
@@ -6182,6 +6228,8 @@ static PyObject *
 os_openpty_impl(PyObject *module)
 /*[clinic end generated code: output=98841ce5ec9cef3c input=f3d99fd99e762907]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int master_fd = -1, slave_fd = -1;
 #ifndef HAVE_OPENPTY
     char * slave_name;
@@ -6284,6 +6332,8 @@ static PyObject *
 os_forkpty_impl(PyObject *module)
 /*[clinic end generated code: output=60d0a5c7512e4087 input=f1f7f4bae3966010]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int master_fd = -1;
     pid_t pid;
 
@@ -6314,6 +6364,7 @@ static PyObject *
 os_getegid_impl(PyObject *module)
 /*[clinic end generated code: output=67d9be7ac68898a2 input=1596f79ad1107d5d]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     return _PyLong_FromGid(getegid());
 }
 #endif /* HAVE_GETEGID */
@@ -6330,6 +6381,7 @@ static PyObject *
 os_geteuid_impl(PyObject *module)
 /*[clinic end generated code: output=ea1b60f0d6abb66e input=4644c662d3bd9f19]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     return _PyLong_FromUid(geteuid());
 }
 #endif /* HAVE_GETEUID */
@@ -6346,6 +6398,7 @@ static PyObject *
 os_getgid_impl(PyObject *module)
 /*[clinic end generated code: output=4f28ebc9d3e5dfcf input=58796344cd87c0f6]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     return _PyLong_FromGid(getgid());
 }
 #endif /* HAVE_GETGID */
@@ -6362,6 +6415,7 @@ static PyObject *
 os_getpid_impl(PyObject *module)
 /*[clinic end generated code: output=9ea6fdac01ed2b3c input=5a9a00f0ab68aa00]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     return PyLong_FromPid(getpid());
 }
 #endif /* HAVE_GETPID */
@@ -6378,6 +6432,8 @@ Returns a list of groups to which a user belongs.\n\n\
 static PyObject *
 posix_getgrouplist(PyObject *self, PyObject *args)
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
 #ifdef NGROUPS_MAX
 #define MAX_GROUPS NGROUPS_MAX
 #else
@@ -6455,6 +6511,8 @@ static PyObject *
 os_getgroups_impl(PyObject *module)
 /*[clinic end generated code: output=42b0c17758561b56 input=d3f109412e6a155c]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     PyObject *result = NULL;
 
 #ifdef NGROUPS_MAX
@@ -6565,6 +6623,8 @@ group id.");
 static PyObject *
 posix_initgroups(PyObject *self, PyObject *args)
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     PyObject *oname;
     const char *username;
     int res;
@@ -6609,6 +6669,8 @@ static PyObject *
 os_getpgid_impl(PyObject *module, pid_t pid)
 /*[clinic end generated code: output=1db95a97be205d18 input=39d710ae3baaf1c7]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     pid_t pgid = getpgid(pid);
     if (pgid < 0)
         return posix_error();
@@ -6628,6 +6690,8 @@ static PyObject *
 os_getpgrp_impl(PyObject *module)
 /*[clinic end generated code: output=c4fc381e51103cf3 input=6846fb2bb9a3705e]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
 #ifdef GETPGRP_HAVE_ARG
     return PyLong_FromPid(getpgrp(0));
 #else /* GETPGRP_HAVE_ARG */
@@ -6648,6 +6712,8 @@ static PyObject *
 os_setpgrp_impl(PyObject *module)
 /*[clinic end generated code: output=2554735b0a60f0a0 input=1f0619fcb5731e7e]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
 #ifdef SETPGRP_HAVE_ARG
     if (setpgrp(0, 0) < 0)
 #else /* SETPGRP_HAVE_ARG */
@@ -6716,6 +6782,8 @@ static PyObject *
 os_getppid_impl(PyObject *module)
 /*[clinic end generated code: output=43b2a946a8c603b4 input=e637cb87539c030e]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
 #ifdef MS_WINDOWS
     return win32_getppid();
 #else
@@ -6736,6 +6804,8 @@ static PyObject *
 os_getlogin_impl(PyObject *module)
 /*[clinic end generated code: output=a32e66a7e5715dac input=2a21ab1e917163df]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     PyObject *result = NULL;
 #ifdef MS_WINDOWS
     wchar_t user_name[UNLEN + 1];
@@ -6779,6 +6849,7 @@ static PyObject *
 os_getuid_impl(PyObject *module)
 /*[clinic end generated code: output=415c0b401ebed11a input=b53c8b35f110a516]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     return _PyLong_FromUid(getuid());
 }
 #endif /* HAVE_GETUID */
@@ -6804,6 +6875,8 @@ os_kill_impl(PyObject *module, pid_t pid, Py_ssize_t signal)
 /*[clinic end generated code: output=8e346a6701c88568 input=61a36b86ca275ab9]*/
 #ifndef MS_WINDOWS
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (kill(pid, (int)signal) == -1)
         return posix_error();
     Py_RETURN_NONE;
@@ -6864,6 +6937,8 @@ static PyObject *
 os_killpg_impl(PyObject *module, pid_t pgid, int signal)
 /*[clinic end generated code: output=6dbcd2f1fdf5fdba input=38b5449eb8faec19]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     /* XXX some man pages make the `pgid` parameter an int, others
        a pid_t. Since getpgrp() returns a pid_t, we assume killpg should
        take the same type. Moreover, pid_t is always at least as wide as
@@ -6892,6 +6967,8 @@ static PyObject *
 os_plock_impl(PyObject *module, int op)
 /*[clinic end generated code: output=81424167033b168e input=e6e5e348e1525f60]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (plock(op) == -1)
         return posix_error();
     Py_RETURN_NONE;
@@ -6913,6 +6990,8 @@ static PyObject *
 os_setuid_impl(PyObject *module, uid_t uid)
 /*[clinic end generated code: output=a0a41fd0d1ec555f input=c921a3285aa22256]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (setuid(uid) < 0)
         return posix_error();
     Py_RETURN_NONE;
@@ -6934,6 +7013,8 @@ static PyObject *
 os_seteuid_impl(PyObject *module, uid_t euid)
 /*[clinic end generated code: output=102e3ad98361519a input=ba93d927e4781aa9]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (seteuid(euid) < 0)
         return posix_error();
     Py_RETURN_NONE;
@@ -6955,6 +7036,8 @@ static PyObject *
 os_setegid_impl(PyObject *module, gid_t egid)
 /*[clinic end generated code: output=4e4b825a6a10258d input=4080526d0ccd6ce3]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (setegid(egid) < 0)
         return posix_error();
     Py_RETURN_NONE;
@@ -6977,6 +7060,8 @@ static PyObject *
 os_setreuid_impl(PyObject *module, uid_t ruid, uid_t euid)
 /*[clinic end generated code: output=62d991210006530a input=0ca8978de663880c]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (setreuid(ruid, euid) < 0) {
         return posix_error();
     } else {
@@ -7001,6 +7086,8 @@ static PyObject *
 os_setregid_impl(PyObject *module, gid_t rgid, gid_t egid)
 /*[clinic end generated code: output=aa803835cf5342f3 input=c59499f72846db78]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (setregid(rgid, egid) < 0)
         return posix_error();
     Py_RETURN_NONE;
@@ -7021,6 +7108,8 @@ static PyObject *
 os_setgid_impl(PyObject *module, gid_t gid)
 /*[clinic end generated code: output=bdccd7403f6ad8c3 input=27d30c4059045dc6]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (setgid(gid) < 0)
         return posix_error();
     Py_RETURN_NONE;
@@ -7042,6 +7131,8 @@ static PyObject *
 os_setgroups(PyObject *module, PyObject *groups)
 /*[clinic end generated code: output=3fcb32aad58c5ecd input=fa742ca3daf85a7e]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     Py_ssize_t i, len;
     gid_t grouplist[MAX_GROUPS];
 
@@ -7159,6 +7250,8 @@ static PyObject *
 os_wait3_impl(PyObject *module, int options)
 /*[clinic end generated code: output=92c3224e6f28217a input=8ac4c56956b61710]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     pid_t pid;
     struct rusage ru;
     int async_err = 0;
@@ -7196,6 +7289,8 @@ static PyObject *
 os_wait4_impl(PyObject *module, pid_t pid, int options)
 /*[clinic end generated code: output=66195aa507b35f70 input=d11deed0750600ba]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     pid_t res;
     struct rusage ru;
     int async_err = 0;
@@ -7238,6 +7333,8 @@ static PyObject *
 os_waitid_impl(PyObject *module, idtype_t idtype, id_t id, int options)
 /*[clinic end generated code: output=5d2e1c0bde61f4d8 input=d8e7f76e052b7920]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     PyObject *result;
     int res;
     int async_err = 0;
@@ -7293,6 +7390,8 @@ static PyObject *
 os_waitpid_impl(PyObject *module, pid_t pid, int options)
 /*[clinic end generated code: output=5c37c06887a20270 input=0bf1666b8758fda3]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     pid_t res;
     int async_err = 0;
     WAIT_TYPE status;
@@ -7328,6 +7427,8 @@ static PyObject *
 os_waitpid_impl(PyObject *module, intptr_t pid, int options)
 /*[clinic end generated code: output=be836b221271d538 input=40f2440c515410f8]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int status;
     intptr_t res;
     int async_err = 0;
@@ -7362,6 +7463,8 @@ static PyObject *
 os_wait_impl(PyObject *module)
 /*[clinic end generated code: output=6bc419ac32fb364b input=03b0182d4a4700ce]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     pid_t pid;
     int async_err = 0;
     WAIT_TYPE status;
@@ -7838,6 +7941,8 @@ static PyObject *
 os_getsid_impl(PyObject *module, pid_t pid)
 /*[clinic end generated code: output=112deae56b306460 input=eeb2b923a30ce04e]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int sid;
     sid = getsid(pid);
     if (sid < 0)
@@ -7858,6 +7963,8 @@ static PyObject *
 os_setsid_impl(PyObject *module)
 /*[clinic end generated code: output=e2ddedd517086d77 input=5fff45858e2f0776]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (setsid() < 0)
         return posix_error();
     Py_RETURN_NONE;
@@ -7880,6 +7987,8 @@ static PyObject *
 os_setpgid_impl(PyObject *module, pid_t pid, pid_t pgrp)
 /*[clinic end generated code: output=6461160319a43d6a input=fceb395eca572e1a]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (setpgid(pid, pgrp) < 0)
         return posix_error();
     Py_RETURN_NONE;
@@ -7901,6 +8010,8 @@ static PyObject *
 os_tcgetpgrp_impl(PyObject *module, int fd)
 /*[clinic end generated code: output=f865e88be86c272b input=7f6c18eac10ada86]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     pid_t pgid = tcgetpgrp(fd);
     if (pgid < 0)
         return posix_error();
@@ -7924,6 +8035,8 @@ static PyObject *
 os_tcsetpgrp_impl(PyObject *module, int fd, pid_t pgid)
 /*[clinic end generated code: output=f1821a381b9daa39 input=5bdc997c6a619020]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (tcsetpgrp(fd, pgid) < 0)
         return posix_error();
     Py_RETURN_NONE;
@@ -8076,6 +8189,7 @@ static int
 os_dup_impl(PyObject *module, int fd)
 /*[clinic end generated code: output=486f4860636b2a9f input=6f10f7ea97f7852a]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     return _Py_dup(fd);
 }
 
@@ -8093,6 +8207,8 @@ static int
 os_dup2_impl(PyObject *module, int fd, int fd2, int inheritable)
 /*[clinic end generated code: output=bc059d34a73404d1 input=c3cddda8922b038d]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int res = 0;
 #if defined(HAVE_DUP3) && \
     !(defined(HAVE_FCNTL_H) && defined(F_DUP2FD_CLOEXEC))
@@ -8824,6 +8940,8 @@ static PyObject *
 os_pipe_impl(PyObject *module)
 /*[clinic end generated code: output=ff9b76255793b440 input=02535e8c8fa6c4d4]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int fds[2];
 #ifdef MS_WINDOWS
     HANDLE read, write;
@@ -8913,6 +9031,8 @@ static PyObject *
 os_pipe2_impl(PyObject *module, int flags)
 /*[clinic end generated code: output=25751fb43a45540f input=f261b6e7e63c6817]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int fds[2];
     int res;
 
@@ -9125,6 +9245,8 @@ static PyObject *
 os_mkfifo_impl(PyObject *module, path_t *path, int mode, int dir_fd)
 /*[clinic end generated code: output=ce41cfad0e68c940 input=73032e98a36e0e19]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int result;
     int async_err = 0;
 
@@ -9177,6 +9299,8 @@ os_mknod_impl(PyObject *module, path_t *path, int mode, dev_t device,
               int dir_fd)
 /*[clinic end generated code: output=92e55d3ca8917461 input=ee44531551a4d83b]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int result;
     int async_err = 0;
 
@@ -9213,6 +9337,7 @@ static unsigned int
 os_major_impl(PyObject *module, dev_t device)
 /*[clinic end generated code: output=5b3b2589bafb498e input=1e16a4d30c4d4462]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     return major(device);
 }
 
@@ -9230,6 +9355,7 @@ static unsigned int
 os_minor_impl(PyObject *module, dev_t device)
 /*[clinic end generated code: output=5e1a25e630b0157d input=0842c6d23f24c65e]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     return minor(device);
 }
 
@@ -9248,6 +9374,7 @@ static dev_t
 os_makedev_impl(PyObject *module, int major, int minor)
 /*[clinic end generated code: output=881aaa4aba6f6a52 input=4b9fd8fc73cbe48f]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     return makedev(major, minor);
 }
 #endif /* HAVE_DEVICE_MACROS */
@@ -9306,6 +9433,8 @@ static PyObject *
 os_truncate_impl(PyObject *module, path_t *path, Py_off_t length)
 /*[clinic end generated code: output=43009c8df5c0a12b input=77229cf0b50a9b77]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int result;
 #ifdef MS_WINDOWS
     int fd;
@@ -9638,6 +9767,7 @@ static int
 os_WCOREDUMP_impl(PyObject *module, int status)
 /*[clinic end generated code: output=1a584b147b16bd18 input=8b05e7ab38528d04]*/
 {
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(0);
     WAIT_TYPE wait_status;
     WAIT_STATUS_INT(wait_status) = status;
     return WCOREDUMP(wait_status);
@@ -9661,6 +9791,7 @@ static int
 os_WIFCONTINUED_impl(PyObject *module, int status)
 /*[clinic end generated code: output=1e35295d844364bd input=e777e7d38eb25bd9]*/
 {
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(0);
     WAIT_TYPE wait_status;
     WAIT_STATUS_INT(wait_status) = status;
     return WIFCONTINUED(wait_status);
@@ -9681,6 +9812,7 @@ static int
 os_WIFSTOPPED_impl(PyObject *module, int status)
 /*[clinic end generated code: output=fdb57122a5c9b4cb input=043cb7f1289ef904]*/
 {
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(0);
     WAIT_TYPE wait_status;
     WAIT_STATUS_INT(wait_status) = status;
     return WIFSTOPPED(wait_status);
@@ -9701,6 +9833,7 @@ static int
 os_WIFSIGNALED_impl(PyObject *module, int status)
 /*[clinic end generated code: output=d1dde4dcc819a5f5 input=d55ba7cc9ce5dc43]*/
 {
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(0);
     WAIT_TYPE wait_status;
     WAIT_STATUS_INT(wait_status) = status;
     return WIFSIGNALED(wait_status);
@@ -9721,6 +9854,7 @@ static int
 os_WIFEXITED_impl(PyObject *module, int status)
 /*[clinic end generated code: output=01c09d6ebfeea397 input=d63775a6791586c0]*/
 {
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(0);
     WAIT_TYPE wait_status;
     WAIT_STATUS_INT(wait_status) = status;
     return WIFEXITED(wait_status);
@@ -9741,6 +9875,7 @@ static int
 os_WEXITSTATUS_impl(PyObject *module, int status)
 /*[clinic end generated code: output=6e3efbba11f6488d input=e1fb4944e377585b]*/
 {
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(0);
     WAIT_TYPE wait_status;
     WAIT_STATUS_INT(wait_status) = status;
     return WEXITSTATUS(wait_status);
@@ -9761,6 +9896,7 @@ static int
 os_WTERMSIG_impl(PyObject *module, int status)
 /*[clinic end generated code: output=172f7dfc8dcfc3ad input=727fd7f84ec3f243]*/
 {
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(0);
     WAIT_TYPE wait_status;
     WAIT_STATUS_INT(wait_status) = status;
     return WTERMSIG(wait_status);
@@ -9781,6 +9917,7 @@ static int
 os_WSTOPSIG_impl(PyObject *module, int status)
 /*[clinic end generated code: output=0ab7586396f5d82b input=46ebf1d1b293c5c1]*/
 {
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(0);
     WAIT_TYPE wait_status;
     WAIT_STATUS_INT(wait_status) = status;
     return WSTOPSIG(wait_status);
@@ -9862,6 +9999,8 @@ static PyObject *
 os_fstatvfs_impl(PyObject *module, int fd)
 /*[clinic end generated code: output=53547cf0cc55e6c5 input=d8122243ac50975e]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int result;
     int async_err = 0;
     struct statvfs st;
@@ -9898,6 +10037,8 @@ static PyObject *
 os_statvfs_impl(PyObject *module, path_t *path)
 /*[clinic end generated code: output=87106dd1beb8556e input=3f5c35791c669bd9]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int result;
     struct statvfs st;
 
@@ -9940,6 +10081,8 @@ static PyObject *
 os__getdiskusage_impl(PyObject *module, path_t *path)
 /*[clinic end generated code: output=3bd3991f5e5c5dfb input=6af8d1b7781cc042]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     BOOL retval;
     ULARGE_INTEGER _, total, free;
 
@@ -10129,6 +10272,8 @@ static long
 os_fpathconf_impl(PyObject *module, int fd, int name)
 /*[clinic end generated code: output=d5b7042425fc3e21 input=5942a024d3777810]*/
 {
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1);
+
     long limit;
 
     errno = 0;
@@ -10158,6 +10303,8 @@ static long
 os_pathconf_impl(PyObject *module, path_t *path, int name)
 /*[clinic end generated code: output=5bedee35b293a089 input=bc3e2a985af27e5e]*/
 {
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1);
+
     long limit;
 
     errno = 0;
@@ -10355,6 +10502,8 @@ static PyObject *
 os_confstr_impl(PyObject *module, int name)
 /*[clinic end generated code: output=bfb0b1b1e49b9383 input=18fb4d0567242e65]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     PyObject *result = NULL;
     char buffer[255];
     size_t len;
@@ -10905,6 +11054,8 @@ static long
 os_sysconf_impl(PyObject *module, int name)
 /*[clinic end generated code: output=3662f945fc0cc756 input=279e3430a33f29e4]*/
 {
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1);
+
     long value;
 
     errno = 0;
@@ -11074,6 +11225,8 @@ static PyObject *
 os_startfile_impl(PyObject *module, path_t *filepath, Py_UNICODE *operation)
 /*[clinic end generated code: output=912ceba79acfa1c9 input=63950bf2986380d0]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     HINSTANCE rc;
 
     if(!check_ShellExecute()) {
@@ -11136,6 +11289,7 @@ static PyObject *
 os_device_encoding_impl(PyObject *module, int fd)
 /*[clinic end generated code: output=e0d294bbab7e8c2b input=9e1d4a42b66df312]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     return _Py_device_encoding(fd);
 }
 
@@ -11156,6 +11310,8 @@ static PyObject *
 os_setresuid_impl(PyObject *module, uid_t ruid, uid_t euid, uid_t suid)
 /*[clinic end generated code: output=834a641e15373e97 input=9e33cb79a82792f3]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (setresuid(ruid, euid, suid) < 0)
         return posix_error();
     Py_RETURN_NONE;
@@ -11179,6 +11335,8 @@ static PyObject *
 os_setresgid_impl(PyObject *module, gid_t rgid, gid_t egid, gid_t sgid)
 /*[clinic end generated code: output=6aa402f3d2e514a9 input=33e9e0785ef426b1]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (setresgid(rgid, egid, sgid) < 0)
         return posix_error();
     Py_RETURN_NONE;
@@ -11197,6 +11355,8 @@ static PyObject *
 os_getresuid_impl(PyObject *module)
 /*[clinic end generated code: output=8e0becff5dece5bf input=41ccfa8e1f6517ad]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     uid_t ruid, euid, suid;
     if (getresuid(&ruid, &euid, &suid) < 0)
         return posix_error();
@@ -11218,6 +11378,8 @@ static PyObject *
 os_getresgid_impl(PyObject *module)
 /*[clinic end generated code: output=2719c4bfcf27fb9f input=517e68db9ca32df6]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     gid_t rgid, egid, sgid;
     if (getresgid(&rgid, &egid, &sgid) < 0)
         return posix_error();
@@ -11251,6 +11413,8 @@ os_getxattr_impl(PyObject *module, path_t *path, path_t *attribute,
                  int follow_symlinks)
 /*[clinic end generated code: output=5f2f44200a43cff2 input=8c8ea3bab78d89c2]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     Py_ssize_t i;
     PyObject *buffer = NULL;
 
@@ -11323,6 +11487,8 @@ os_setxattr_impl(PyObject *module, path_t *path, path_t *attribute,
                  Py_buffer *value, int flags, int follow_symlinks)
 /*[clinic end generated code: output=98b83f63fdde26bb input=f0d26833992015c2]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     ssize_t result;
 
     if (fd_and_follow_symlinks_invalid("setxattr", path->fd, follow_symlinks))
@@ -11371,6 +11537,8 @@ os_removexattr_impl(PyObject *module, path_t *path, path_t *attribute,
                     int follow_symlinks)
 /*[clinic end generated code: output=521a51817980cda6 input=cdb54834161e3329]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     ssize_t result;
 
     if (fd_and_follow_symlinks_invalid("removexattr", path->fd, follow_symlinks))
@@ -11413,6 +11581,8 @@ static PyObject *
 os_listxattr_impl(PyObject *module, path_t *path, int follow_symlinks)
 /*[clinic end generated code: output=bebdb4e2ad0ce435 input=08cca53ac0b07c13]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     Py_ssize_t i;
     PyObject *result = NULL;
     const char *name;
@@ -11701,6 +11871,8 @@ static int
 os_get_inheritable_impl(PyObject *module, int fd)
 /*[clinic end generated code: output=0445e20e149aa5b8 input=89ac008dc9ab6b95]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int return_value;
     _Py_BEGIN_SUPPRESS_IPH
     return_value = _Py_get_inheritable(fd);
@@ -11722,6 +11894,8 @@ static PyObject *
 os_set_inheritable_impl(PyObject *module, int fd, int inheritable)
 /*[clinic end generated code: output=f1b1918a2f3c38c2 input=9ceaead87a1e2402]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int result;
 
     _Py_BEGIN_SUPPRESS_IPH
@@ -11746,6 +11920,8 @@ static int
 os_get_handle_inheritable_impl(PyObject *module, intptr_t handle)
 /*[clinic end generated code: output=36be5afca6ea84d8 input=cfe99f9c05c70ad1]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     DWORD flags;
 
     if (!GetHandleInformation((HANDLE)handle, &flags)) {
@@ -11771,6 +11947,8 @@ os_set_handle_inheritable_impl(PyObject *module, intptr_t handle,
                                int inheritable)
 /*[clinic end generated code: output=021d74fe6c96baa3 input=7a7641390d8364fc]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     DWORD flags = inheritable ? HANDLE_FLAG_INHERIT : 0;
     if (!SetHandleInformation((HANDLE)handle, HANDLE_FLAG_INHERIT, flags)) {
         PyErr_SetFromWindowsErr(0);
@@ -12669,6 +12847,8 @@ static PyObject *
 os_scandir_impl(PyObject *module, path_t *path)
 /*[clinic end generated code: output=6eb2668b675ca89e input=b139dc1c57f60846]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     ScandirIterator *iterator;
 #ifdef MS_WINDOWS
     wchar_t *path_strW;
@@ -12767,6 +12947,8 @@ error:
 PyObject *
 PyOS_FSPath(PyObject *path)
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     /* For error message reasons, this function is manually inlined in
        path_converter(). */
     _Py_IDENTIFIER(__fspath__);
