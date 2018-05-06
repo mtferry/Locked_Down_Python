@@ -1270,6 +1270,8 @@ _Py_fopen(const char *pathname, const char *mode)
 FILE*
 _Py_fopen_obj(PyObject *path, const char *mode)
 {
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(NULL);
+
     FILE *f;
     int async_err = 0;
 #ifdef MS_WINDOWS
