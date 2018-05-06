@@ -4738,7 +4738,7 @@ import_name(PyFrameObject *f, PyObject *name, PyObject *fromlist, PyObject *leve
 
     if (lockdown_is_enabled)
     {
-      PyErr_SetString(PyExc_RuntimeError, "can't import when lockdown is enabled");
+      PyErr_SetString(PyExc_RuntimeError, "lockdown is enabled");
       return NULL;
     }
     
@@ -4784,7 +4784,7 @@ import_from(PyObject *v, PyObject *name)
 
     if (lockdown_is_enabled)
     {
-      PyErr_SetString(PyExc_RuntimeError, "can't import when lockdown is enabled");
+      PyErr_SetString(PyExc_RuntimeError, "lockdown is enabled");
       return NULL;
     }
     
@@ -4862,7 +4862,7 @@ import_all_from(PyObject *locals, PyObject *v)
 
     if (lockdown_is_enabled)
     {
-      PyErr_SetString(PyExc_RuntimeError, "can't import when lockdown is enabled");
+      PyErr_SetString(PyExc_RuntimeError, "lockdown is enabled");
       return -1;
     }
     

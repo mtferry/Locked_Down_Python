@@ -236,11 +236,10 @@ _io_open_impl(PyObject *module, PyObject *file, const char *mode,
 {
     if (lockdown_is_enabled)
     {
-      PyErr_Format(PyExc_RuntimeError,
-                     "can't open files when lockdown is enabled");
+      PyErr_Format(PyExc_RuntimeError, "lockdown is enabled");
       return NULL;
     }
-  
+
     unsigned i;
 
     int creating = 0, reading = 0, writing = 0, appending = 0, updating = 0;
