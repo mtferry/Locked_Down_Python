@@ -497,8 +497,13 @@ tb_displayline(PyObject *f, PyObject *filename, int lineno, PyObject *name)
 
     if (filename == NULL || name == NULL)
         return -1;
-    line = PyUnicode_FromFormat("  File \"%U\", line %d, in %U\n",
-                                filename, lineno, name);
+    if (!lockdown_is_enabled) {
+      line = PyUnicode_FromFormat("  File \"%U\", line %d, in %U\n",
+                                  filename, lineno, name);
+    } else {
+      line = PyUnicode_FromFormat("  Line %d, in %U\n",
+                                  lineno, name);
+    }
     if (line == NULL)
         return -1;
     err = PyFile_WriteObject(line, f, Py_PRINT_RAW);
