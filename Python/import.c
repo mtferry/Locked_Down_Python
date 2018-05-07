@@ -1684,12 +1684,11 @@ PyImport_ImportModuleLevelObject(PyObject *name, PyObject *globals,
     PyInterpreterState *interp = PyThreadState_GET()->interp;
     int has_from;
 
-    if (lockdown_is_enabled)
-    {
+    if (lockdown_is_enabled) {
       PyErr_SetString(PyExc_RuntimeError, LOCKDOWN_EXCEPTION_STRING);
       goto error;
     }
-    
+
     if (name == NULL) {
         PyErr_SetString(PyExc_ValueError, "Empty module name");
         goto error;
@@ -1726,12 +1725,6 @@ PyImport_ImportModuleLevelObject(PyObject *name, PyObject *globals,
 
     mod = PyImport_GetModule(abs_name);
     if (mod != NULL && mod != Py_None) {
-        if (lockdown_is_enabled)
-        {
-          PyErr_SetString(PyExc_RuntimeError, LOCKDOWN_EXCEPTION_STRING);
-          goto error;
-        }
-      
         _Py_IDENTIFIER(__spec__);
         _Py_IDENTIFIER(_initializing);
         _Py_IDENTIFIER(_lock_unlock_module);
