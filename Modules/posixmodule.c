@@ -4231,7 +4231,7 @@ static long
 os_system_impl(PyObject *module, Py_UNICODE *command)
 /*[clinic end generated code: output=96c4dffee36dfb48 input=303f5ce97df606b0]*/
 {
-    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(0);
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1);
 
     long result;
     Py_BEGIN_ALLOW_THREADS
@@ -4254,7 +4254,7 @@ static long
 os_system_impl(PyObject *module, PyObject *command)
 /*[clinic end generated code: output=290fc437dd4f33a0 input=86a58554ba6094af]*/
 {
-    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1);
 
     long result;
     const char *bytes = PyBytes_AsString(command);
@@ -8189,7 +8189,7 @@ static int
 os_dup_impl(PyObject *module, int fd)
 /*[clinic end generated code: output=486f4860636b2a9f input=6f10f7ea97f7852a]*/
 {
-    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1);
     return _Py_dup(fd);
 }
 
@@ -8207,7 +8207,7 @@ static int
 os_dup2_impl(PyObject *module, int fd, int fd2, int inheritable)
 /*[clinic end generated code: output=bc059d34a73404d1 input=c3cddda8922b038d]*/
 {
-    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1);
 
     int res = 0;
 #if defined(HAVE_DUP3) && \
@@ -11871,7 +11871,7 @@ static int
 os_get_inheritable_impl(PyObject *module, int fd)
 /*[clinic end generated code: output=0445e20e149aa5b8 input=89ac008dc9ab6b95]*/
 {
-    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1);
 
     int return_value;
     _Py_BEGIN_SUPPRESS_IPH
@@ -11920,7 +11920,7 @@ static int
 os_get_handle_inheritable_impl(PyObject *module, intptr_t handle)
 /*[clinic end generated code: output=36be5afca6ea84d8 input=cfe99f9c05c70ad1]*/
 {
-    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1);
 
     DWORD flags;
 
