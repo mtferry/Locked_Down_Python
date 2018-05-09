@@ -19,7 +19,24 @@ blocked_cmds = [
 if has_winreg:
   blocked_cmds.extend([
     'winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)',
-    'winreg.CreateKey(winreg.HKEY_LOCAL_MACHINE, "foo")'
+    'winreg.CreateKey(winreg.HKEY_LOCAL_MACHINE, "foo")',
+    'winreg.DeleteKey(winreg.HKEY_CURRENT_USER, "cbe01b20-46dc-47d7-be3e-34a1d3f17c34")',
+    'winreg.DeleteValue(winreg.HKEY_CURRENT_USER, "cbe01b20-46dc-47d7-be3e-34a1d3f17c34")',
+    'winreg.EnumKey(winreg.HKEY_CURRENT_USER, 0)',
+    'winreg.EnumValue(winreg.HKEY_CURRENT_USER, 0)',
+    'winreg.ExpandEnvironmentStrings("%windir%")',
+    'winreg.FlushKey(winreg.HKEY_CURRENT_USER)',
+    'winreg.LoadKey(winreg.HKEY_USERS, "foo", "bar")',
+    'winreg.OpenKey(winreg.HKEY_CURRENT_USER, "foo")',
+    'winreg.QueryInfoKey(winreg.HKEY_CURRENT_USER)',
+    'winreg.QueryValue(winreg.HKEY_CURRENT_USER, "foo")',
+    'winreg.QueryValueEx(winreg.HKEY_CURRENT_USER, "foo")',
+    'winreg.SaveKey(winreg.HKEY_USERS, "foo")',
+    'winreg.SetValue(winreg.HKEY_CURRENT_USER, "foo", 0, "bar")',
+    'winreg.SetValueEx(winreg.HKEY_CURRENT_USER, "foo", 0, 0, "bar")',
+    'winreg.DisableReflectionKey(winreg.HKEY_CURRENT_USER)',
+    'winreg.EnableReflectionKey(winreg.HKEY_CURRENT_USER)',
+    'winreg.QueryReflectionKey(winreg.HKEY_CURRENT_USER)'
   ])
 
 blocked_attributes = [
