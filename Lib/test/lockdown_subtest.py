@@ -11,11 +11,16 @@ valid_fd_2 = os.open(__file__, os.O_RDONLY)
 
 lockdown_exception = RuntimeError('lockdown is enabled')
 
+# Parameters are valid enough enough that they should cover code past what Argument Clinic generates such that a lockdown_exception will raise if lockdown is enabled for a given command but invalid enough that the commands will fail without altering anything on disk
+
 # These commands must raise lockdown_exception
 blocked_cmds = [
   'import sys',
   'from os import *',
   'from os import system',
+  'id(sys)',
+  'sys.setrecursionlimit(9)',
+  'sys.getrecursionlimit()',
   'zipimport.zipimporter("foo")',
   'open("foo.txt","r")',
   'io.open("foo.txt","r")',
@@ -36,7 +41,12 @@ blocked_cmds = [
   'os.dup(valid_fd)',
   'os.dup2(valid_fd, valid_fd_2)',
   'os.open("foo.txt", 0o777)',
-  'os.pipe()'
+  'os.pipe()',
+  'os.access("foo.txt", 0)',
+  'os.chdir("..")',
+  'os.chmod("", 0)',
+  'os.getcwd()',
+  'os.getcwdb()'
 ]
 
 # Same as above but these may not exist on some platforms
@@ -90,7 +100,15 @@ blocked_cmds_may_not_exist = [
   'os.get_inheritable(valid_fd)',
   'os.set_inheritable(valid_fd, -1)',
   'os.get_handle_inheritable(-1)',
-  'os.set_handle_inheritable(-1, -1)'
+  'os.set_handle_inheritable(-1, -1)',
+  'os.chflags("", 0)',
+  'os.chown("", 0, 0)',
+  'os.chroot("..")',
+  'os.fchdir(valid_fd)',
+  'os.lchflags("",0)',
+  'os.lchmod("",0)',
+  'os.lchown("",0,0)',
+  'os.link("","")'
 ]
 
 if has_winreg:
@@ -117,7 +135,6 @@ if has_winreg:
   ])
 
 # These shouldn't raise lockdown_exception but should raise another exception
-# Parameters are valid enough enough that this should cover code past what Argument Clinic generates such that the test will fail if lockdown disables these but invalid enough that the commands will fail without altering anything on disk
 # Since this will ignore AttributeErrors, we don't need to check if the platform supports these
 allowed_cmds_with_exceptions = [
   'os.environ["foo"]',

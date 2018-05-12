@@ -553,7 +553,16 @@ w_complex_object(PyObject *v, char flag, WFILE *p)
         w_object(co->co_varnames, p);
         w_object(co->co_freevars, p);
         w_object(co->co_cellvars, p);
-        w_object(co->co_filename, p);
+        if (lockdown_is_enabled)
+        {
+          PyObject* t = PyUnicode_FromFormat("???");
+          w_object(t, p);
+          Py_DECREF(t);
+        }
+        else
+        {
+          w_object(co->co_filename, p);
+        }
         w_object(co->co_name, p);
         w_long(co->co_firstlineno, p);
         w_object(co->co_lnotab, p);

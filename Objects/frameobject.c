@@ -540,9 +540,16 @@ static PyObject *
 frame_repr(PyFrameObject *f)
 {
     int lineno = PyFrame_GetLineNumber(f);
-    return PyUnicode_FromFormat(
-        "<frame at %p, file %R, line %d, code %S>",
-        f, f->f_code->co_filename, lineno, f->f_code->co_name);
+    if (lockdown_is_enabled) {
+      return PyUnicode_FromFormat(
+          "<frame, line %d, code %S>",
+          lineno, f->f_code->co_name);
+    } else {
+      return PyUnicode_FromFormat(
+          "<frame at %p, file %R, line %d, code %S>",
+          f, f->f_code->co_filename, lineno, f->f_code->co_name);
+
+    }
 }
 
 static PyMethodDef frame_methods[] = {

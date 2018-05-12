@@ -271,11 +271,29 @@ static PyMemberDef code_memberlist[] = {
     {"co_varnames",     T_OBJECT,       OFF(co_varnames),       READONLY},
     {"co_freevars",     T_OBJECT,       OFF(co_freevars),       READONLY},
     {"co_cellvars",     T_OBJECT,       OFF(co_cellvars),       READONLY},
-    {"co_filename",     T_OBJECT,       OFF(co_filename),       READONLY},
     {"co_name",         T_OBJECT,       OFF(co_name),           READONLY},
     {"co_firstlineno", T_INT,           OFF(co_firstlineno),    READONLY},
     {"co_lnotab",       T_OBJECT,       OFF(co_lnotab),         READONLY},
     {NULL}      /* Sentinel */
+};
+
+static PyObject*
+code_get_co_filename(PyCodeObject* self, void* closure)
+{
+  if (lockdown_is_enabled)
+  {
+    return PyUnicode_FromFormat("???");
+  }
+  else
+  {
+    Py_INCREF(self->co_filename);
+    return self->co_filename;
+  }
+}
+
+static PyGetSetDef code_getset[] = {
+  {"co_filename", (getter)code_get_co_filename, NULL, NULL},
+  {NULL}      /* Sentinel */
 };
 
 /* Helper for code_new: return a shallow copy of a tuple that is
@@ -472,7 +490,7 @@ code_repr(PyCodeObject *co)
         lineno = co->co_firstlineno;
     else
         lineno = -1;
-    if (co->co_filename && PyUnicode_Check(co->co_filename)) {
+    if (!lockdown_is_enabled && co->co_filename && PyUnicode_Check(co->co_filename)) {
         return PyUnicode_FromFormat(
             "<code object %U at %p, file \"%U\", line %d>",
             co->co_name, co, co->co_filename, lineno);
@@ -749,7 +767,7 @@ PyTypeObject PyCode_Type = {
     0,                                  /* tp_iternext */
     code_methods,                       /* tp_methods */
     code_memberlist,                    /* tp_members */
-    0,                                  /* tp_getset */
+    code_getset,                        /* tp_getset */
     0,                                  /* tp_base */
     0,                                  /* tp_dict */
     0,                                  /* tp_descr_get */

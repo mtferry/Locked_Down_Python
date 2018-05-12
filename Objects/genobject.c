@@ -933,6 +933,24 @@ coro_get_cr_await(PyCoroObject *coro)
     return yf;
 }
 
+static PyObject*
+coro_get_cr_origin(PyCoroObject *coro)
+{
+    Py_INCREF(coro->cr_origin);
+    if (lockdown_is_enabled)
+    {
+      PyObject* seq = PySequence_Fast(coro->cr_origin, "expected a sequence");
+      int i, size = PySequence_Fast_GET_SIZE(seq);
+      for (i = 0; i < size; i++)
+      {
+        PyObject* item = PySequence_Fast_GET_ITEM(seq, i);
+        PySequence_SetItem(item, 0, Py_None);
+      }
+      Py_DECREF(seq);
+    }
+    return coro->cr_origin;
+}
+
 static PyGetSetDef coro_getsetlist[] = {
     {"__name__", (getter)gen_get_name, (setter)gen_set_name,
      PyDoc_STR("name of the coroutine")},
@@ -940,6 +958,7 @@ static PyGetSetDef coro_getsetlist[] = {
      PyDoc_STR("qualified name of the coroutine")},
     {"cr_await", (getter)coro_get_cr_await, NULL,
      PyDoc_STR("object being awaited on, or None")},
+    {"cr_origin", (getter)coro_get_cr_origin, NULL, NULL},
     {NULL} /* Sentinel */
 };
 
@@ -947,7 +966,6 @@ static PyMemberDef coro_memberlist[] = {
     {"cr_frame",     T_OBJECT, offsetof(PyCoroObject, cr_frame),    READONLY},
     {"cr_running",   T_BOOL,   offsetof(PyCoroObject, cr_running),  READONLY},
     {"cr_code",      T_OBJECT, offsetof(PyCoroObject, cr_code),     READONLY},
-    {"cr_origin",    T_OBJECT, offsetof(PyCoroObject, cr_origin),   READONLY},
     {NULL}      /* Sentinel */
 };
 

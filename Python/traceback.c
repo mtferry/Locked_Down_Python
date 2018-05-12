@@ -750,7 +750,8 @@ dump_frame(int fd, PyFrameObject *frame)
 
     code = frame->f_code;
     PUTS(fd, "  File ");
-    if (code != NULL && code->co_filename != NULL
+    if (!lockdown_is_enabled &&
+        code != NULL && code->co_filename != NULL
         && PyUnicode_Check(code->co_filename))
     {
         PUTS(fd, "\"");

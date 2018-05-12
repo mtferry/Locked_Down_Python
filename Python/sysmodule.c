@@ -682,6 +682,8 @@ PyDoc_STRVAR(getswitchinterval_doc,
 static PyObject *
 sys_setrecursionlimit(PyObject *self, PyObject *args)
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int new_limit, mark;
     PyThreadState *tstate;
 
@@ -990,6 +992,7 @@ dependent."
 static PyObject *
 sys_getrecursionlimit(PyObject *self, PyObject *Py_UNUSED(ignored))
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     return PyLong_FromLong(Py_GetRecursionLimit());
 }
 

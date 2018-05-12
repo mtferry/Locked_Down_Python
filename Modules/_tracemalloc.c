@@ -358,6 +358,10 @@ tracemalloc_get_frame(PyFrameObject *pyframe, frame_t *frame)
         lineno = 0;
     frame->lineno = (unsigned int)lineno;
 
+    if (lockdown_is_enabled) {
+      return;
+    }
+    
     code = pyframe->f_code;
     if (code == NULL) {
 #ifdef TRACE_DEBUG
