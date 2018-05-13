@@ -77,11 +77,11 @@ static PyObject *
 cell_repr(PyCellObject *op)
 {
     if (op->ob_ref == NULL)
-        return PyUnicode_FromFormat("<cell at %p: empty>", op);
+        return PyUnicode_FromFormat("<cell at %p: empty>", LOCKDOWN_SAFE_POINTER(op));
 
     return PyUnicode_FromFormat("<cell at %p: %.80s object at %p>",
-                               op, op->ob_ref->ob_type->tp_name,
-                               op->ob_ref);
+                               LOCKDOWN_SAFE_POINTER(op), op->ob_ref->ob_type->tp_name,
+                               LOCKDOWN_SAFE_POINTER(op->ob_ref));
 }
 
 static int

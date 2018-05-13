@@ -200,7 +200,7 @@ static PyObject *
 lock_repr(lockobject *self)
 {
     return PyUnicode_FromFormat("<%s %s object at %p>",
-        self->locked ? "locked" : "unlocked", Py_TYPE(self)->tp_name, self);
+        self->locked ? "locked" : "unlocked", Py_TYPE(self)->tp_name, LOCKDOWN_SAFE_POINTER(self));
 }
 
 static PyMethodDef lock_methods[] = {
@@ -461,7 +461,7 @@ rlock_repr(rlockobject *self)
     return PyUnicode_FromFormat("<%s %s object owner=%ld count=%lu at %p>",
         self->rlock_count ? "locked" : "unlocked",
         Py_TYPE(self)->tp_name, self->rlock_owner,
-        self->rlock_count, self);
+        self->rlock_count, LOCKDOWN_SAFE_POINTER(self));
 }
 
 

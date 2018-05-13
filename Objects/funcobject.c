@@ -547,7 +547,7 @@ static PyObject*
 func_repr(PyFunctionObject *op)
 {
     return PyUnicode_FromFormat("<function %U at %p>",
-                               op->func_qualname, op);
+                               op->func_qualname, LOCKDOWN_SAFE_POINTER(op));
 }
 
 static int

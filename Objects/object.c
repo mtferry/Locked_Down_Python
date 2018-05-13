@@ -207,7 +207,7 @@ _Py_NegativeRefcount(const char *fname, int lineno, PyObject *op)
     PyOS_snprintf(buf, sizeof(buf),
                   "%s:%i object at %p has negative ref count "
                   "%" PY_FORMAT_SIZE_T "d",
-                  fname, lineno, op, op->ob_refcnt);
+                  fname, lineno, LOCKDOWN_SAFE_POINTER(op), op->ob_refcnt);
     Py_FatalError(buf);
 }
 
@@ -359,7 +359,7 @@ PyObject_Print(PyObject *op, FILE *fp, int flags)
                universally available */
             Py_BEGIN_ALLOW_THREADS
             fprintf(fp, "<refcnt %ld at %p>",
-                (long)op->ob_refcnt, op);
+                (long)op->ob_refcnt, LOCKDOWN_SAFE_POINTER(op));
             Py_END_ALLOW_THREADS
         else {
             PyObject *s;
@@ -456,7 +456,7 @@ PyObject_Repr(PyObject *v)
         return PyUnicode_FromString("<NULL>");
     if (Py_TYPE(v)->tp_repr == NULL)
         return PyUnicode_FromFormat("<%s object at %p>",
-                                    v->ob_type->tp_name, v);
+                                    v->ob_type->tp_name, LOCKDOWN_SAFE_POINTER(v));
 
 #ifdef Py_DEBUG
     /* PyObject_Repr() must not be called with an exception set,

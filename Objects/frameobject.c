@@ -547,7 +547,7 @@ frame_repr(PyFrameObject *f)
     } else {
       return PyUnicode_FromFormat(
           "<frame at %p, file %R, line %d, code %S>",
-          f, f->f_code->co_filename, lineno, f->f_code->co_name);
+          LOCKDOWN_SAFE_POINTER(f), f->f_code->co_filename, lineno, f->f_code->co_name);
 
     }
 }

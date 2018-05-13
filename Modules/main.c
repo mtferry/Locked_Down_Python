@@ -2501,7 +2501,6 @@ pymain_init_sys_path(_PyMain *pymain)
     return 0;
 }
 
-
 static void
 pymain_run_python(_PyMain *pymain)
 {
@@ -2538,6 +2537,8 @@ pymain_init(_PyMain *pymain)
 
     pymain->config._disable_importlib = 0;
     pymain->config.install_signal_handlers = 1;
+    
+    INIT_LOCKDOWN();
 }
 
 

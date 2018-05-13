@@ -307,24 +307,6 @@ builtin_globals(PyObject *module, PyObject *Py_UNUSED(ignored))
     return builtin_globals_impl(module);
 }
 
-PyDoc_STRVAR(builtin_lockdown__doc__,
-"lockdown($module, /)\n"
-"--\n"
-"\n"
-"Make a one-way transition into a locked down state.");
-
-#define BUILTIN_LOCKDOWN_METHODDEF    \
-    {"lockdown", (PyCFunction)builtin_lockdown, METH_NOARGS, builtin_lockdown__doc__},
-
-static PyObject *
-builtin_lockdown_impl(PyObject *module);
-
-static PyObject *
-builtin_lockdown(PyObject *module, PyObject *Py_UNUSED(ignored))
-{
-    return builtin_lockdown_impl(module);
-}
-
 PyDoc_STRVAR(builtin_hasattr__doc__,
 "hasattr($module, obj, name, /)\n"
 "--\n"

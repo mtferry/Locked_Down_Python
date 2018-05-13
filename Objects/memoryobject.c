@@ -2169,9 +2169,9 @@ static PyObject *
 memory_repr(PyMemoryViewObject *self)
 {
     if (self->flags & _Py_MEMORYVIEW_RELEASED)
-        return PyUnicode_FromFormat("<released memory at %p>", self);
+        return PyUnicode_FromFormat("<released memory at %p>", LOCKDOWN_SAFE_POINTER(self));
     else
-        return PyUnicode_FromFormat("<memory at %p>", self);
+        return PyUnicode_FromFormat("<memory at %p>", LOCKDOWN_SAFE_POINTER(self));
 }
 
 

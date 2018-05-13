@@ -3741,10 +3741,10 @@ object_repr(PyObject *self)
         return NULL;
     }
     if (mod != NULL && !_PyUnicode_EqualToASCIIId(mod, &PyId_builtins))
-        rtn = PyUnicode_FromFormat("<%U.%U object at %p>", mod, name, self);
+        rtn = PyUnicode_FromFormat("<%U.%U object at %p>", mod, name, LOCKDOWN_SAFE_POINTER(self));
     else
         rtn = PyUnicode_FromFormat("<%s object at %p>",
-                                  type->tp_name, self);
+                                  type->tp_name, LOCKDOWN_SAFE_POINTER(self));
     Py_XDECREF(mod);
     Py_DECREF(name);
     return rtn;
@@ -6295,7 +6295,7 @@ slot_tp_repr(PyObject *self)
     }
     PyErr_Clear();
     return PyUnicode_FromFormat("<%s object at %p>",
-                               Py_TYPE(self)->tp_name, self);
+                               Py_TYPE(self)->tp_name, LOCKDOWN_SAFE_POINTER(self));
 }
 
 SLOT0(slot_tp_str, "__str__")

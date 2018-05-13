@@ -1,9 +1,7 @@
-import sys
-
-_lockdown = lockdown
+import sys, os
 
 def lockdown():
-  _lockdown()
+  os.lockdown()
   for a in ['executable', 'base_exec_prefix', 'base_prefix', 'dllhandle', 'exec_prefix', 'prefix', 'path_importer_cache', 'path']:
     setattr(sys, a, None)
   sys.modules['os'].environ._data = None

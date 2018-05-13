@@ -5665,6 +5665,24 @@ exit:
     return return_value;
 }
 
+PyDoc_STRVAR(os_lockdown__doc__,
+"lockdown($module, /)\n"
+"--\n"
+"\n"
+"Make a one-way transition into a locked down state.");
+
+#define OS_LOCKDOWN_METHODDEF    \
+    {"lockdown", (PyCFunction)os_lockdown, METH_NOARGS, os_lockdown__doc__},
+
+static PyObject *
+os_lockdown_impl(PyObject *module);
+
+static PyObject *
+os_lockdown(PyObject *module, PyObject *Py_UNUSED(ignored))
+{
+    return os_lockdown_impl(module);
+}
+
 PyDoc_STRVAR(os_cpu_count__doc__,
 "cpu_count($module, /)\n"
 "--\n"
@@ -6589,4 +6607,4 @@ exit:
 #ifndef OS_GETRANDOM_METHODDEF
     #define OS_GETRANDOM_METHODDEF
 #endif /* !defined(OS_GETRANDOM_METHODDEF) */
-/*[clinic end generated code: output=8d3d9dddf254c3c2 input=a9049054013a1b77]*/
+/*[clinic end generated code: output=5ec2e70d14131483 input=a9049054013a1b77]*/

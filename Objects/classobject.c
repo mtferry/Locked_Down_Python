@@ -552,7 +552,7 @@ instancemethod_repr(PyObject *self)
     }
 
     result = PyUnicode_FromFormat("<instancemethod %V at %p>",
-                                  funcname, defname, self);
+                                  funcname, defname, LOCKDOWN_SAFE_POINTER(self));
 
     Py_XDECREF(funcname);
     return result;

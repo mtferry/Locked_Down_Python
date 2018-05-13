@@ -497,7 +497,7 @@ code_repr(PyCodeObject *co)
     } else {
         return PyUnicode_FromFormat(
             "<code object %U at %p, file ???, line %d>",
-            co->co_name, co, lineno);
+            co->co_name, LOCKDOWN_SAFE_POINTER(co), lineno);
     }
 }
 

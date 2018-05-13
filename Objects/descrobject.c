@@ -1082,7 +1082,7 @@ wrapper_repr(wrapperobject *wp)
     return PyUnicode_FromFormat("<method-wrapper '%s' of %s object at %p>",
                                wp->descr->d_base->name,
                                wp->self->ob_type->tp_name,
-                               wp->self);
+                               LOCKDOWN_SAFE_POINTER(wp->self));
 }
 
 static PyObject *

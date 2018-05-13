@@ -11695,6 +11695,31 @@ os_urandom_impl(PyObject *module, Py_ssize_t size)
     return bytes;
 }
 
+/*[clinic input]
+os.lockdown
+
+Make a one-way transition into a locked down state.
+[clinic start generated code]*/
+
+static PyObject *
+os_lockdown_impl(PyObject *module)
+/*[clinic end generated code: output=d54fd78de0613dae input=cf61ee1f0f3f43d2]*/
+{
+    if (!lockdown_is_enabled)
+    {
+      PyObject* r = os_urandom_impl(module, 2*sizeof(long long));
+      if (r == NULL)
+        return NULL;
+      
+      memcpy(&lockdown_pointer_multiplier, PyBytes_AsString(r), sizeof(long long));
+      memcpy(&lockdown_pointer_offset, PyBytes_AsString(r)+sizeof(long long), sizeof(long long));
+      Py_DECREF(r);
+    }
+    
+    lockdown_is_enabled = 1;
+    Py_RETURN_NONE;
+}
+
 /* Terminal size querying */
 
 static PyTypeObject TerminalSizeType;
@@ -13236,6 +13261,7 @@ static PyMethodDef posix_methods[] = {
     OS__GETVOLUMEPATHNAME_METHODDEF
     OS_GETLOADAVG_METHODDEF
     OS_URANDOM_METHODDEF
+    OS_LOCKDOWN_METHODDEF
     OS_SETRESUID_METHODDEF
     OS_SETRESGID_METHODDEF
     OS_GETRESUID_METHODDEF

@@ -1639,12 +1639,12 @@ element_repr(ElementObject* self)
     int status;
 
     if (self->tag == NULL)
-        return PyUnicode_FromFormat("<Element at %p>", self);
+        return PyUnicode_FromFormat("<Element at %p>", LOCKDOWN_SAFE_POINTER(self));
 
     status = Py_ReprEnter((PyObject *)self);
     if (status == 0) {
         PyObject *res;
-        res = PyUnicode_FromFormat("<Element %R at %p>", self->tag, self);
+        res = PyUnicode_FromFormat("<Element %R at %p>", LOCKDOWN_SAFE_POINTER(self->tag), LOCKDOWN_SAFE_POINTER(self));
         Py_ReprLeave((PyObject *)self);
         return res;
     }

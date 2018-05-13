@@ -850,7 +850,7 @@ contextvar_tp_repr(PyContextVar *self)
         Py_DECREF(def);
     }
 
-    PyObject *addr = PyUnicode_FromFormat(" at %p>", self);
+    PyObject *addr = PyUnicode_FromFormat(" at %p>", LOCKDOWN_SAFE_POINTER(self));
     if (addr == NULL) {
         goto error;
     }
@@ -1043,7 +1043,7 @@ token_tp_repr(PyContextToken *self)
     }
     Py_DECREF(var);
 
-    PyObject *addr = PyUnicode_FromFormat(" at %p>", self);
+    PyObject *addr = PyUnicode_FromFormat(" at %p>", LOCKDOWN_SAFE_POINTER(self));
     if (addr == NULL) {
         goto error;
     }

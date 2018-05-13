@@ -9,6 +9,8 @@ except ModuleNotFoundError:
 valid_fd = os.open(__file__, os.O_RDONLY)
 valid_fd_2 = os.open(__file__, os.O_RDONLY)
 
+valid_id = id(valid_fd)
+
 lockdown_exception = RuntimeError('lockdown is enabled')
 
 # Parameters are valid enough enough that they should cover code past what Argument Clinic generates such that a lockdown_exception will raise if lockdown is enabled for a given command but invalid enough that the commands will fail without altering anything on disk
@@ -18,7 +20,6 @@ blocked_cmds = [
   'import sys',
   'from os import *',
   'from os import system',
-  'id(sys)',
   'sys.setrecursionlimit(9)',
   'sys.getrecursionlimit()',
   'zipimport.zipimporter("foo")',
@@ -210,5 +211,7 @@ for cmd in allowed_cmds_with_exceptions:
 for cmd in allowed_cmds_no_exception:
   check(cmd, expected = 'NO EXCEPTION')
 
+print('PASSED' if id(os) != valid_id else 'FAILED', "Check that id isn't using actual pointers")
+  
 print()
 print(passed, 'of', len(blocked_cmds+allowed_cmds_with_exceptions+allowed_cmds_no_exception), 'tests passed')

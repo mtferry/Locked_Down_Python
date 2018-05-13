@@ -640,7 +640,7 @@ static PyObject *
 gen_repr(PyGenObject *gen)
 {
     return PyUnicode_FromFormat("<generator object %S at %p>",
-                                gen->gi_qualname, gen);
+                                gen->gi_qualname, LOCKDOWN_SAFE_POINTER(gen));
 }
 
 static PyObject *
@@ -908,7 +908,7 @@ static PyObject *
 coro_repr(PyCoroObject *coro)
 {
     return PyUnicode_FromFormat("<coroutine object %S at %p>",
-                                coro->cr_qualname, coro);
+                                coro->cr_qualname, LOCKDOWN_SAFE_POINTER(coro));
 }
 
 static PyObject *
@@ -1265,7 +1265,7 @@ static PyObject *
 async_gen_repr(PyAsyncGenObject *o)
 {
     return PyUnicode_FromFormat("<async_generator object %S at %p>",
-                                o->ag_qualname, o);
+                                o->ag_qualname, LOCKDOWN_SAFE_POINTER(o));
 }
 
 

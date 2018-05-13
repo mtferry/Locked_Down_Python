@@ -161,7 +161,7 @@ weakref_repr(PyWeakReference *self)
     _Py_IDENTIFIER(__name__);
 
     if (PyWeakref_GET_OBJECT(self) == Py_None)
-        return PyUnicode_FromFormat("<weakref at %p; dead>", self);
+        return PyUnicode_FromFormat("<weakref at %p; dead>", LOCKDOWN_SAFE_POINTER(self));
 
     name = _PyObject_GetAttrId(PyWeakref_GET_OBJECT(self), &PyId___name__);
     if (name == NULL || !PyUnicode_Check(name)) {
@@ -169,16 +169,16 @@ weakref_repr(PyWeakReference *self)
             PyErr_Clear();
         repr = PyUnicode_FromFormat(
             "<weakref at %p; to '%s' at %p>",
-            self,
+            LOCKDOWN_SAFE_POINTER(self),
             Py_TYPE(PyWeakref_GET_OBJECT(self))->tp_name,
-            PyWeakref_GET_OBJECT(self));
+            LOCKDOWN_SAFE_POINTER(PyWeakref_GET_OBJECT(self)));
     }
     else {
         repr = PyUnicode_FromFormat(
             "<weakref at %p; to '%s' at %p (%U)>",
-            self,
+            LOCKDOWN_SAFE_POINTER(self),
             Py_TYPE(PyWeakref_GET_OBJECT(self))->tp_name,
-            PyWeakref_GET_OBJECT(self),
+            LOCKDOWN_SAFE_POINTER(PyWeakref_GET_OBJECT(self)),
             name);
     }
     Py_XDECREF(name);
@@ -470,9 +470,9 @@ proxy_repr(PyWeakReference *proxy)
 {
     return PyUnicode_FromFormat(
         "<weakproxy at %p to %s at %p>",
-        proxy,
+        LOCKDOWN_SAFE_POINTER(proxy),
         Py_TYPE(PyWeakref_GET_OBJECT(proxy))->tp_name,
-        PyWeakref_GET_OBJECT(proxy));
+        LOCKDOWN_SAFE_POINTER(PyWeakref_GET_OBJECT(proxy)));
 }
 
 
