@@ -1,7 +1,10 @@
-import sys, os
+import sys
+
+try: import nt as posix
+except ImportError: import posix
 
 def lockdown():
-  os.lockdown()
+  posix._lockdown()
   for a in ['executable', 'base_exec_prefix', 'base_prefix', 'dllhandle', 'exec_prefix', 'prefix', 'path_importer_cache', 'path']:
     setattr(sys, a, None)
   sys.modules['os'].environ._data = None

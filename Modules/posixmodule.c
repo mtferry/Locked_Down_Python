@@ -11696,14 +11696,17 @@ os_urandom_impl(PyObject *module, Py_ssize_t size)
 }
 
 /*[clinic input]
-os.lockdown
+os._lockdown
 
 Make a one-way transition into a locked down state.
+
+This is an internal function. Use lockdownlib.lockdown() instead.
 [clinic start generated code]*/
 
 static PyObject *
-os_lockdown_impl(PyObject *module)
-/*[clinic end generated code: output=d54fd78de0613dae input=cf61ee1f0f3f43d2]*/
+os__lockdown_impl(PyObject *module)
+/*[clinic end generated code: output=447f841adfb92926 input=fc4b7eea334506d6]*/
+
 {
     if (!lockdown_is_enabled)
     {
@@ -13261,7 +13264,7 @@ static PyMethodDef posix_methods[] = {
     OS__GETVOLUMEPATHNAME_METHODDEF
     OS_GETLOADAVG_METHODDEF
     OS_URANDOM_METHODDEF
-    OS_LOCKDOWN_METHODDEF
+    OS__LOCKDOWN_METHODDEF
     OS_SETRESUID_METHODDEF
     OS_SETRESGID_METHODDEF
     OS_GETRESUID_METHODDEF
