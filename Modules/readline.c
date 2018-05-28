@@ -176,6 +176,8 @@ Execute the init line provided in the string argument.");
 static PyObject *
 read_init_file(PyObject *self, PyObject *args)
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     PyObject *filename_obj = Py_None, *filename_bytes;
     if (!PyArg_ParseTuple(args, "|O:read_init_file", &filename_obj))
         return NULL;
@@ -202,6 +204,8 @@ The default filename is the last filename used.");
 static PyObject *
 read_history_file(PyObject *self, PyObject *args)
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     PyObject *filename_obj = Py_None, *filename_bytes;
     if (!PyArg_ParseTuple(args, "|O:read_history_file", &filename_obj))
         return NULL;
@@ -229,6 +233,8 @@ The default filename is ~/.history.");
 static PyObject *
 write_history_file(PyObject *self, PyObject *args)
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     PyObject *filename_obj = Py_None, *filename_bytes;
     char *filename;
     int err;
@@ -264,6 +270,8 @@ The default filename is ~/.history.");
 static PyObject *
 append_history_file(PyObject *self, PyObject *args)
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int nelements;
     PyObject *filename_obj = Py_None, *filename_bytes;
     char *filename;

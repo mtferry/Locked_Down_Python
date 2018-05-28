@@ -13,5 +13,6 @@ def lockdown():
     setattr(sys.modules['site'], a, '')
   for m in sys.modules:
     sys.modules[m].__file__ = None
+    sys.modules[m].__cached__ = None
     try: sys.modules[m].__spec__.origin = None
     except AttributeError: pass
