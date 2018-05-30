@@ -2023,6 +2023,13 @@ exit:
 #if defined(MS_WINDOWS) && defined(_DEBUG)
         DebugBreak();
 #endif
+
+#if defined(MS_WINDOWS)
+      // Don't invoke error reporting if we're in lockdown
+      if (lockdown_is_enabled)
+        SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOALIGNMENTFAULTEXCEPT | SEM_NOGPFAULTERRORBOX | SEM_NOOPENFILEERRORBOX);
+#endif
+
         abort();
     }
     else {

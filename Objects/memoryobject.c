@@ -1760,6 +1760,8 @@ pack_single(char *ptr, PyObject *item, const char *fmt)
     double d;
     void *p;
 
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1);
+
     switch (fmt[0]) {
     /* signed integers */
     case 'b': case 'h': case 'i': case 'l':

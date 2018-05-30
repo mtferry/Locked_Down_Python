@@ -426,6 +426,9 @@ list_item(PyListObject *a, Py_ssize_t i)
 static PyObject *
 list_slice(PyListObject *a, Py_ssize_t ilow, Py_ssize_t ihigh)
 {
+    // TEMPFIX Issue31165, remove once a proper fix comes from upstream
+    Py_ssize_t new_ihigh = ihigh, new_ilow = ilow;
+    
     PyListObject *np;
     PyObject **src, **dest;
     Py_ssize_t i, len;
@@ -441,6 +444,20 @@ list_slice(PyListObject *a, Py_ssize_t ilow, Py_ssize_t ihigh)
     np = (PyListObject *) PyList_New(len);
     if (np == NULL)
         return NULL;
+    
+    // TEMPFIX Issue31165, remove once a proper fix comes from upstream
+    if (new_ilow < 0)
+        new_ilow = 0;
+    else if (new_ilow > Py_SIZE(a))
+        new_ilow = Py_SIZE(a);
+    if (new_ihigh < new_ilow)
+        new_ihigh = new_ilow;
+    else if (new_ihigh > Py_SIZE(a))
+        new_ihigh = Py_SIZE(a);
+    if (new_ihigh != ihigh || new_ilow != ilow) {
+      PyErr_SetString(PyExc_RuntimeError, "list size modified during garbage collection");
+      return NULL;
+    }
 
     src = a->ob_item + ilow;
     dest = np->ob_item;
