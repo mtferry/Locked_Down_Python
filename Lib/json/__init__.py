@@ -359,3 +359,12 @@ def loads(s, *, encoding=None, cls=None, object_hook=None, parse_float=None,
     if parse_constant is not None:
         kw['parse_constant'] = parse_constant
     return cls(**kw).decode(s)
+
+def _lockdown():
+  json = codecs.sys.modules['json'] # Evil hack to avoid the cost of another import
+  json.decoder.scanstring = json.decoder.py_scanstring
+  json.encoder.encode_basestring_ascii = json.encoder.py_encode_basestring_ascii
+  json.encoder.encode_basestring = json.encoder.py_encode_basestring
+  json.encoder.c_make_encoder = None
+  json.scanner.make_scanner = json.scanner.py_make_scanner
+  _default_decoder.scan_once = json.scanner.make_scanner(_default_decoder)

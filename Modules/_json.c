@@ -595,6 +595,9 @@ py_scanstring(PyObject* self UNUSED, PyObject *args)
     Py_ssize_t end;
     Py_ssize_t next_end = -1;
     int strict = 1;
+    
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    
     if (!PyArg_ParseTuple(args, "On|i:scanstring", &pystr, &end, &strict)) {
         return NULL;
     }
@@ -622,6 +625,9 @@ py_encode_basestring_ascii(PyObject* self UNUSED, PyObject *pystr)
     PyObject *rval;
     /* Return an ASCII-only JSON representation of a Python string */
     /* METH_O */
+    
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    
     if (PyUnicode_Check(pystr)) {
         rval = ascii_escape_unicode(pystr);
     }
@@ -647,6 +653,9 @@ py_encode_basestring(PyObject* self UNUSED, PyObject *pystr)
     PyObject *rval;
     /* Return a JSON representation of a Python string */
     /* METH_O */
+    
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    
     if (PyUnicode_Check(pystr)) {
         rval = escape_unicode(pystr);
     }
@@ -1171,6 +1180,9 @@ scanner_call(PyObject *self, PyObject *args, PyObject *kwds)
     Py_ssize_t next_idx = -1;
     static char *kwlist[] = {"string", "idx", NULL};
     PyScannerObject *s;
+    
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    
     assert(PyScanner_Check(self));
     s = (PyScannerObject *)self;
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "On:scan_once", kwlist, &pystr, &idx))
@@ -1199,6 +1211,8 @@ scanner_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
     PyObject *strict;
     static char *kwlist[] = {"context", NULL};
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "O:make_scanner", kwlist, &ctx))
         return NULL;
 
@@ -1297,6 +1311,8 @@ encoder_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
     PyObject *item_separator;
     int sort_keys, skipkeys, allow_nan;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "OOOOUUppp:make_encoder", kwlist,
         &markers, &defaultfn, &encoder, &indent,
         &key_separator, &item_separator,
@@ -1350,6 +1366,8 @@ encoder_call(PyObject *self, PyObject *args, PyObject *kwds)
     Py_ssize_t indent_level;
     PyEncoderObject *s;
     _PyAccu acc;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     assert(PyEncoder_Check(self));
     s = (PyEncoderObject *)self;
