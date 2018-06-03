@@ -57,7 +57,7 @@ def test():
           r.sub(fstr(), fstr(), fint())
           r.subn(fstr(), fstr())
           r.subn(fstr(), fstr(), fint())
-        except re.error:
+        except (re.error, KeyError, IndexError):
           pass
         
         s = r.scanner(fstr())
