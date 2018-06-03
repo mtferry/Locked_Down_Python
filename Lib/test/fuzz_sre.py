@@ -1,18 +1,24 @@
-# _sre Fuzz Test
+# Fuzz Test for _sre
 
-import os, random, re, _sre, time
+import os, re, _sre, time
 
-rnd = random.SystemRandom()
+# Returns an int between 0 and n (inclusive) where n < 256
+# Does so without using the random module since random depends on the math module which can't be built if re or _sre aren't working
+def randint(n):
+  while True:
+    r = ord(os.urandom(1))
+    if r <= (256//(n+1)*(n+1)):
+      return r%(n+1)
 
 def nop(*args, **kwargs): return 1
 
-def fstr(): return os.urandom(rnd.randint(0,10))
+def fstr(): return os.urandom(randint(10))
 
-def fint(): return rnd.randint(0,20)
+def fint(): return randint(20)
 
 def flst():
   l = []
-  for _ in range(rnd.randint(0,20)):
+  for _ in range(randint(20)):
     l.append(fint())
   return l
 
@@ -94,9 +100,9 @@ def test():
   for m, args in (fullmatch_matches + match_matches + search_matches):
     for _ in range(9999):
       try:
-        m.start(rnd.randint(-999,999))
-        m.end(rnd.randint(-999,999))
-        m.span(rnd.randint(-999,999))
+        m.start(randint(255)-128)
+        m.end(randint(255)-128)
+        m.span(randint(255)-128)
         m.group(*flst())
         m.groupdict()
         m.lastgroup
