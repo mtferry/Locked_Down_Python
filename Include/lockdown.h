@@ -7,7 +7,7 @@ extern "C" {
 int lockdown_is_enabled;
 long long lockdown_pointer_multiplier, lockdown_pointer_offset;
 
-static inline void INIT_LOCKDOWN()
+static inline void INIT_LOCKDOWN(void)
 {
 	lockdown_is_enabled = 0;
 }

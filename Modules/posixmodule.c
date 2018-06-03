@@ -2633,7 +2633,7 @@ static char *
 os_ttyname_impl(PyObject *module, int fd)
 /*[clinic end generated code: output=ed16ad216d813591 input=5f72ca83e76b3b45]*/
 {
-    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(NULL);
 
     char *ret;
 
@@ -5986,7 +5986,7 @@ static double
 os_sched_rr_get_interval_impl(PyObject *module, pid_t pid)
 /*[clinic end generated code: output=7e2d935833ab47dc input=2a973da15cca6fae]*/
 {
-    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1.0);
 
     struct timespec interval;
     if (sched_rr_get_interval(pid, &interval)) {
@@ -9337,7 +9337,7 @@ static unsigned int
 os_major_impl(PyObject *module, dev_t device)
 /*[clinic end generated code: output=5b3b2589bafb498e input=1e16a4d30c4d4462]*/
 {
-    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1);
     return major(device);
 }
 
@@ -9355,7 +9355,7 @@ static unsigned int
 os_minor_impl(PyObject *module, dev_t device)
 /*[clinic end generated code: output=5e1a25e630b0157d input=0842c6d23f24c65e]*/
 {
-    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1);
     return minor(device);
 }
 
@@ -9374,7 +9374,7 @@ static dev_t
 os_makedev_impl(PyObject *module, int major, int minor)
 /*[clinic end generated code: output=881aaa4aba6f6a52 input=4b9fd8fc73cbe48f]*/
 {
-    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(NULL);
     return makedev(major, minor);
 }
 #endif /* HAVE_DEVICE_MACROS */

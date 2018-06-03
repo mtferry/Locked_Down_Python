@@ -409,7 +409,8 @@ state_init(SRE_STATE* state, PatternObject* pattern, PyObject* string,
 
     memset(state, 0, sizeof(SRE_STATE));
 
-    state->mark = PyMem_New(void *, pattern->groups * 2);
+    state->mark_size = pattern->groups * 2;
+    state->mark = PyMem_New(void *, state->mark_size);
     if (!state->mark) {
         PyErr_NoMemory();
         goto err;

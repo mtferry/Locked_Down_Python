@@ -595,6 +595,8 @@ entrance:
             TRACE(("|%p|%p|MARK %d\n", ctx->pattern,
                    ctx->ptr, ctx->pattern[0]));
             i = ctx->pattern[0];
+            if (i >= state->mark_size)
+                RETURN_ERROR(SRE_ERROR_STATE);
             if (i & 1)
                 state->lastindex = i/2 + 1;
             if (i > state->lastmark) {

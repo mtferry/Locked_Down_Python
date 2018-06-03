@@ -75,6 +75,7 @@ typedef struct {
     Py_ssize_t lastindex;
     Py_ssize_t lastmark;
     void** mark;
+    Py_ssize_t mark_size;
     int match_all;
     int must_advance;
     /* dynamically allocated stuff */

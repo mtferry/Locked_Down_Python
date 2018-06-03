@@ -1067,6 +1067,7 @@ static PyObject *
 gc_enable_impl(PyObject *module)
 /*[clinic end generated code: output=45a427e9dce9155c input=81ac4940ca579707]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     _PyRuntime.gc.enabled = 1;
     Py_RETURN_NONE;
 }
@@ -1081,6 +1082,7 @@ static PyObject *
 gc_disable_impl(PyObject *module)
 /*[clinic end generated code: output=97d1030f7aa9d279 input=8c2e5a14e800d83b]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     _PyRuntime.gc.enabled = 0;
     Py_RETURN_NONE;
 }
@@ -1117,6 +1119,8 @@ gc_collect_impl(PyObject *module, int generation)
 /*[clinic end generated code: output=b697e633043233c7 input=40720128b682d879]*/
 {
     Py_ssize_t n;
+
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1);
 
     if (generation < 0 || generation >= NUM_GENERATIONS) {
         PyErr_SetString(PyExc_ValueError, "invalid generation");
@@ -1156,6 +1160,8 @@ static PyObject *
 gc_set_debug_impl(PyObject *module, int flags)
 /*[clinic end generated code: output=7c8366575486b228 input=5e5ce15e84fbed15]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    
     _PyRuntime.gc.debug = flags;
 
     Py_RETURN_NONE;
@@ -1184,6 +1190,9 @@ static PyObject *
 gc_set_thresh(PyObject *self, PyObject *args)
 {
     int i;
+    
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    
     if (!PyArg_ParseTuple(args, "i|ii:set_threshold",
                           &_PyRuntime.gc.generations[0].threshold,
                           &_PyRuntime.gc.generations[1].threshold,
@@ -1266,6 +1275,9 @@ static PyObject *
 gc_get_referrers(PyObject *self, PyObject *args)
 {
     int i;
+    
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    
     PyObject *result = PyList_New(0);
     if (!result) return NULL;
 
@@ -1293,6 +1305,9 @@ static PyObject *
 gc_get_referents(PyObject *self, PyObject *args)
 {
     Py_ssize_t i;
+    
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    
     PyObject *result = PyList_New(0);
 
     if (result == NULL)
@@ -1327,6 +1342,8 @@ gc_get_objects_impl(PyObject *module)
 {
     int i;
     PyObject* result;
+    
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     result = PyList_New(0);
     if (result == NULL)
@@ -1354,6 +1371,8 @@ gc_get_stats_impl(PyObject *module)
     PyObject *result;
     struct gc_generation_stats stats[NUM_GENERATIONS], *st;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    
     /* To get consistent values despite allocations while constructing
        the result list, we use a snapshot of the running stats. */
     for (i = 0; i < NUM_GENERATIONS; i++) {
@@ -1405,6 +1424,8 @@ gc_is_tracked(PyObject *module, PyObject *obj)
 {
     PyObject *result;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    
     if (PyObject_IS_GC(obj) && IS_TRACKED(obj))
         result = Py_True;
     else
@@ -1427,6 +1448,8 @@ static PyObject *
 gc_freeze_impl(PyObject *module)
 /*[clinic end generated code: output=502159d9cdc4c139 input=b602b16ac5febbe5]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+  
     for (int i = 0; i < NUM_GENERATIONS; ++i) {
         gc_list_merge(GEN_HEAD(i), &_PyRuntime.gc.permanent_generation.head);
         _PyRuntime.gc.generations[i].count = 0;
@@ -1446,6 +1469,8 @@ static PyObject *
 gc_unfreeze_impl(PyObject *module)
 /*[clinic end generated code: output=1c15f2043b25e169 input=2dd52b170f4cef6c]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     gc_list_merge(&_PyRuntime.gc.permanent_generation.head, GEN_HEAD(NUM_GENERATIONS-1));
     Py_RETURN_NONE;
 }
