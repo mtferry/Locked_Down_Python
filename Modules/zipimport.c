@@ -440,6 +440,8 @@ zipimport_zipimporter_find_module_impl(ZipImporter *self, PyObject *fullname,
     PyObject *namespace_portion = NULL;
     PyObject *result = NULL;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     switch (find_loader(self, fullname, &namespace_portion)) {
     case FL_ERROR:
         return NULL;
@@ -487,6 +489,8 @@ zipimport_zipimporter_find_loader_impl(ZipImporter *self, PyObject *fullname,
     PyObject *result = NULL;
     PyObject *namespace_portion = NULL;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     switch (find_loader(self, fullname, &namespace_portion)) {
     case FL_ERROR:
         return NULL;
@@ -527,6 +531,8 @@ zipimport_zipimporter_load_module_impl(ZipImporter *self, PyObject *fullname)
     PyObject *code = NULL, *mod, *dict;
     PyObject *modpath = NULL;
     int ispackage;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     if (PyUnicode_READY(fullname) == -1)
         return NULL;
@@ -602,6 +608,8 @@ zipimport_zipimporter_get_filename_impl(ZipImporter *self,
     PyObject *code, *modpath;
     int ispackage;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     /* Deciding the filename requires working out where the code
        would come from if the module was actually loaded */
     code = get_module_code(self, fullname, &ispackage, &modpath);
@@ -630,6 +638,8 @@ zipimport_zipimporter_is_package_impl(ZipImporter *self, PyObject *fullname)
 {
     enum zi_module_info mi;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    
     mi = get_module_info(self, fullname);
     if (mi == MI_ERROR)
         return NULL;
@@ -660,6 +670,8 @@ zipimport_zipimporter_get_data_impl(ZipImporter *self, PyObject *path)
     PyObject *key;
     PyObject *toc_entry;
     Py_ssize_t path_start, path_len, len;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     if (self->archive == NULL) {
         PyErr_SetString(PyExc_ValueError,
@@ -720,6 +732,7 @@ static PyObject *
 zipimport_zipimporter_get_code_impl(ZipImporter *self, PyObject *fullname)
 /*[clinic end generated code: output=b923c37fa99cbac4 input=2761412bc37f3549]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     return get_module_code(self, fullname, NULL, NULL);
 }
 
@@ -743,6 +756,8 @@ zipimport_zipimporter_get_source_impl(ZipImporter *self, PyObject *fullname)
     PyObject *toc_entry;
     PyObject *subname, *path, *fullpath;
     enum zi_module_info mi;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     mi = get_module_info(self, fullname);
     if (mi == MI_ERROR)
@@ -804,6 +819,8 @@ zipimport_zipimporter_get_resource_reader_impl(ZipImporter *self,
                                                PyObject *fullname)
 /*[clinic end generated code: output=5e367d431f830726 input=bfab94d736e99151]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     PyObject *module = PyImport_ImportModule("importlib.resources");
     if (module == NULL) {
         return NULL;
@@ -829,10 +846,34 @@ static PyMethodDef zipimporter_methods[] = {
     {NULL,              NULL}   /* sentinel */
 };
 
-static PyMemberDef zipimporter_members[] = {
-    {"archive",  T_OBJECT, offsetof(ZipImporter, archive),  READONLY},
-    {"prefix",   T_OBJECT, offsetof(ZipImporter, prefix),   READONLY},
-    {"_files",   T_OBJECT, offsetof(ZipImporter, files),    READONLY},
+static PyObject *
+zipimporter_get_archive(ZipImporter *self, void* closure)
+{
+  RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+  Py_INCREF(self->archive);
+  return self->archive;
+}
+
+static PyObject *
+zipimporter_get_prefix(ZipImporter *self, void* closure)
+{
+  RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+  Py_INCREF(self->prefix);
+  return self->prefix;
+}
+
+static PyObject *
+zipimporter_get__files(ZipImporter *self, void* closure)
+{
+  RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+  Py_INCREF(self->files);
+  return self->files;
+}
+
+static PyGetSetDef zipimporter_getset[] = {
+    {"archive", (getter)zipimporter_get_archive, NULL, NULL},
+    {"prefix", (getter)zipimporter_get_prefix, NULL, NULL},
+    {"_files", (getter)zipimporter_get__files, NULL, NULL},
     {NULL}
 };
 
@@ -868,8 +909,8 @@ static PyTypeObject ZipImporter_Type = {
     0,                                          /* tp_iter */
     0,                                          /* tp_iternext */
     zipimporter_methods,                        /* tp_methods */
-    zipimporter_members,                        /* tp_members */
-    0,                                          /* tp_getset */
+    0,                                          /* tp_members */
+    zipimporter_getset,                         /* tp_getset */
     0,                                          /* tp_base */
     0,                                          /* tp_dict */
     0,                                          /* tp_descr_get */
