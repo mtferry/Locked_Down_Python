@@ -104,6 +104,8 @@ zipimport_zipimporter___init___impl(ZipImporter *self, PyObject *path)
     PyObject *filename = NULL;
     Py_ssize_t len, flen;
 
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1);
+
     if (PyUnicode_READY(path) == -1)
         return -1;
 

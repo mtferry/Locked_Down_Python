@@ -233,6 +233,8 @@ time_clock_settime(PyObject *self, PyObject *args)
     struct timespec tp;
     int ret;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    
     if (!PyArg_ParseTuple(args, "iO:clock_settime", &clk_id, &obj))
         return NULL;
 
@@ -263,6 +265,8 @@ time_clock_settime_ns(PyObject *self, PyObject *args)
     _PyTime_t t;
     struct timespec ts;
     int ret;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED
 
     if (!PyArg_ParseTuple(args, "iO:clock_settime", &clk_id, &obj)) {
         return NULL;

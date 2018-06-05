@@ -237,6 +237,7 @@ static PyObject *
 _imp_lock_held_impl(PyObject *module)
 /*[clinic end generated code: output=8b89384b5e1963fc input=9b088f9b217d9bdf]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     return PyBool_FromLong(import_lock_thread != PYTHREAD_INVALID_THREAD_ID);
 }
 
@@ -253,6 +254,7 @@ static PyObject *
 _imp_acquire_lock_impl(PyObject *module)
 /*[clinic end generated code: output=1aff58cb0ee1b026 input=4a2d4381866d5fdc]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     _PyImport_AcquireLock();
     Py_RETURN_NONE;
 }
@@ -269,6 +271,7 @@ static PyObject *
 _imp_release_lock_impl(PyObject *module)
 /*[clinic end generated code: output=7faab6d0be178b0a input=934fb11516dd778b]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     if (_PyImport_ReleaseLock() < 0) {
         PyErr_SetString(PyExc_RuntimeError,
                         "not holding the import lock");
@@ -1054,6 +1057,8 @@ _imp__fix_co_filename_impl(PyObject *module, PyCodeObject *code,
 /*[clinic end generated code: output=1d002f100235587d input=895ba50e78b82f05]*/
 
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+  
     update_compiled_module(code, path);
 
     Py_RETURN_NONE;
@@ -1069,6 +1074,8 @@ static const struct _frozen * find_frozen(PyObject *);
 static int
 is_builtin(PyObject *name)
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int i;
     for (i = 0; PyImport_Inittab[i].name != NULL; i++) {
         if (_PyUnicode_EqualToASCIIString(name, PyImport_Inittab[i].name)) {
@@ -1171,6 +1178,8 @@ _imp_create_builtin(PyObject *module, PyObject *spec)
     const char *namestr;
     PyObject *mod;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     name = PyObject_GetAttrString(spec, "name");
     if (name == NULL) {
         return NULL;
@@ -1255,6 +1264,8 @@ find_frozen(PyObject *name)
 static PyObject *
 get_frozen_object(PyObject *name)
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     const struct _frozen *p = find_frozen(name);
     int size;
 
@@ -1279,6 +1290,8 @@ get_frozen_object(PyObject *name)
 static PyObject *
 is_frozen_package(PyObject *name)
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     const struct _frozen *p = find_frozen(name);
     int size;
 
@@ -1987,6 +2000,8 @@ _imp_extension_suffixes_impl(PyObject *module)
     const char *suffix;
     unsigned int index = 0;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     list = PyList_New(0);
     if (list == NULL)
         return NULL;
@@ -2024,6 +2039,8 @@ _imp_init_frozen_impl(PyObject *module, PyObject *name)
 {
     int ret;
     PyObject *m;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     ret = PyImport_ImportFrozenModuleObject(name);
     if (ret < 0)
@@ -2065,6 +2082,7 @@ static PyObject *
 _imp_is_frozen_package_impl(PyObject *module, PyObject *name)
 /*[clinic end generated code: output=e70cbdb45784a1c9 input=81b6cdecd080fbb8]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     return is_frozen_package(name);
 }
 
@@ -2109,6 +2127,8 @@ exec_builtin_or_dynamic(PyObject *mod) {
     PyModuleDef *def;
     void *state;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    
     if (!PyModule_Check(mod)) {
         return 0;
     }
@@ -2145,6 +2165,8 @@ _imp_create_dynamic_impl(PyObject *module, PyObject *spec, PyObject *file)
 {
     PyObject *mod, *name, *path;
     FILE *fp;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     name = PyObject_GetAttrString(spec, "name");
     if (name == NULL) {
@@ -2231,6 +2253,8 @@ static PyObject *
 _imp_source_hash_impl(PyObject *module, long key, Py_buffer *source)
 /*[clinic end generated code: output=edb292448cf399ea input=9aaad1e590089789]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     union {
         uint64_t x;
         char data[sizeof(uint64_t)];
