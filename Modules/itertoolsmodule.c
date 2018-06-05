@@ -2552,7 +2552,9 @@ combinations_next(combinationsobject *co)
            starting with i, the leftmost index that changed */
         for ( ; i<r ; i++) {
             index = indices[i];
-            elem = PyTuple_GET_ITEM(pool, index);
+            elem = PyTuple_GetItem(pool, index);
+            if (!elem)
+              return NULL;
             Py_INCREF(elem);
             oldelem = PyTuple_GET_ITEM(result, i);
             PyTuple_SET_ITEM(result, i, elem);
@@ -2629,7 +2631,9 @@ combinations_setstate(combinationsobject *lz, PyObject *state)
     if (result == NULL)
         return NULL;
     for (i=0; i<lz->r; i++) {
-        PyObject *element = PyTuple_GET_ITEM(lz->pool, lz->indices[i]);
+        PyObject *element = PyTuple_GetItem(lz->pool, lz->indices[i]);
+        if (!element)
+          return NULL;
         Py_INCREF(element);
         PyTuple_SET_ITEM(result, i, element);
     }
@@ -2960,7 +2964,9 @@ cwr_setstate(cwrobject *lz, PyObject *state)
     if (result == NULL)
         return NULL;
     for (i=0; i<lz->r; i++) {
-        PyObject *element = PyTuple_GET_ITEM(lz->pool, lz->indices[i]);
+        PyObject *element = PyTuple_GetItem(lz->pool, lz->indices[i]);
+        if (!element)
+          return NULL;
         Py_INCREF(element);
         PyTuple_SET_ITEM(result, i, element);
     }

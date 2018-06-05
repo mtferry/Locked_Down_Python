@@ -16,7 +16,7 @@ def do_iter_test(i):
   try: i.__copy__()
   except AttributeError: pass
   try: i.__setstate__(tuple(fiter()))
-  except (AttributeError, TypeError, ValueError): pass
+  except (AttributeError, TypeError, ValueError, IndexError): pass
   try: i.__sizeof__()
   except AttributeError: pass
   return list(i)
@@ -55,7 +55,10 @@ def test():
      do_iter_test(itertools.product(fiter(), fiter()))
      do_iter_test(itertools.product(fiter(), repeat=rnd.randint(0,3)))
      do_iter_test(itertools.permutations(fiter(), func(abs(fint()),None)))
-     do_iter_test(itertools.combinations(fiter(), abs(fint())))
+     
+     try: do_iter_test(itertools.combinations(fiter(), abs(fint())))
+     except IndexError: pass
+     
      do_iter_test(itertools.combinations_with_replacement(fiter(), abs(fint())))
      
      do_iter_test(itertools._grouper(itertools.groupby(fiter(), fint), fiter()))
