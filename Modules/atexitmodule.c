@@ -183,6 +183,7 @@ Run all registered exit functions.");
 static PyObject *
 atexit_run_exitfuncs(PyObject *self, PyObject *unused)
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     atexit_callfuncs(self);
     if (PyErr_Occurred())
         return NULL;
@@ -197,6 +198,7 @@ Clear the list of previously registered exit functions.");
 static PyObject *
 atexit_clear(PyObject *self, PyObject *unused)
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     atexit_cleanup(GET_ATEXIT_STATE(self));
     Py_RETURN_NONE;
 }
