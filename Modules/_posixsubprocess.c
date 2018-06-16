@@ -561,6 +561,8 @@ subprocess_fork_exec(PyObject* self, PyObject *args)
     Py_ssize_t arg_num;
     int need_after_fork = 0;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (!PyArg_ParseTuple(
             args, "OOpO!OOiiiiiiiiiiO:fork_exec",
             &process_args, &executable_list,

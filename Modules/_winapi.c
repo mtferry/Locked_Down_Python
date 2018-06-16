@@ -450,6 +450,8 @@ _winapi_CreateFile_impl(PyObject *module, LPCTSTR file_name,
 {
     HANDLE handle;
 
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(INVALID_HANDLE_VALUE);
+    
     Py_BEGIN_ALLOW_THREADS
     handle = CreateFile(file_name, desired_access,
                         share_mode, security_attributes,
@@ -479,6 +481,8 @@ _winapi_CreateJunction_impl(PyObject *module, LPWSTR src_path,
     /* Privilege adjustment */
     HANDLE token = NULL;
     TOKEN_PRIVILEGES tp;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED
 
     /* Reparse data buffer */
     const USHORT prefix_len = 4;
@@ -624,6 +628,8 @@ _winapi_CreateNamedPipe_impl(PyObject *module, LPCTSTR name, DWORD open_mode,
 {
     HANDLE handle;
 
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(INVALID_HANDLE_VALUE);
+
     Py_BEGIN_ALLOW_THREADS
     handle = CreateNamedPipe(name, open_mode, pipe_mode,
                              max_instances, out_buffer_size,
@@ -657,6 +663,8 @@ _winapi_CreatePipe_impl(PyObject *module, PyObject *pipe_attrs, DWORD size)
     HANDLE read_pipe;
     HANDLE write_pipe;
     BOOL result;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     Py_BEGIN_ALLOW_THREADS
     result = CreatePipe(&read_pipe, &write_pipe, NULL, size);
@@ -1009,6 +1017,8 @@ _winapi_CreateProcess_impl(PyObject *module, Py_UNICODE *application_name,
     wchar_t *wenvironment;
     AttributeList attribute_list = {0};
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     ZeroMemory(&si, sizeof(si));
     si.StartupInfo.cb = sizeof(si);
 
@@ -1102,6 +1112,8 @@ _winapi_DuplicateHandle_impl(PyObject *module, HANDLE source_process_handle,
 {
     HANDLE target_handle;
     BOOL result;
+    
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(INVALID_HANDLE_VALUE);
 
     Py_BEGIN_ALLOW_THREADS
     result = DuplicateHandle(
@@ -1156,6 +1168,7 @@ static HANDLE
 _winapi_GetCurrentProcess_impl(PyObject *module)
 /*[clinic end generated code: output=ddeb4dd2ffadf344 input=b213403fd4b96b41]*/
 {
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(INVALID_HANDLE_VALUE);
     return GetCurrentProcess();
 }
 
@@ -1219,6 +1232,8 @@ _winapi_GetModuleFileName_impl(PyObject *module, HMODULE module_handle)
     BOOL result;
     WCHAR filename[MAX_PATH];
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     result = GetModuleFileNameW(module_handle, filename, MAX_PATH);
     filename[MAX_PATH-1] = '\0';
 
@@ -1245,6 +1260,8 @@ _winapi_GetStdHandle_impl(PyObject *module, DWORD std_handle)
 /*[clinic end generated code: output=0e613001e73ab614 input=07016b06a2fc8826]*/
 {
     HANDLE handle;
+
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(INVALID_HANDLE_VALUE);
 
     Py_BEGIN_ALLOW_THREADS
     handle = GetStdHandle(std_handle);
@@ -1292,6 +1309,8 @@ _winapi_OpenProcess_impl(PyObject *module, DWORD desired_access,
 /*[clinic end generated code: output=b42b6b81ea5a0fc3 input=ec98c4cf4ea2ec36]*/
 {
     HANDLE handle;
+
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(INVALID_HANDLE_VALUE);
 
     handle = OpenProcess(desired_access, inherit_handle, process_id);
     if (handle == NULL) {
@@ -1487,6 +1506,8 @@ _winapi_WaitNamedPipe_impl(PyObject *module, LPCTSTR name, DWORD timeout)
 /*[clinic end generated code: output=c2866f4439b1fe38 input=36fc781291b1862c]*/
 {
     BOOL success;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     Py_BEGIN_ALLOW_THREADS
     success = WaitNamedPipe(name, timeout);

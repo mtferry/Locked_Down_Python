@@ -175,6 +175,8 @@ msvcrt_open_osfhandle_impl(PyObject *module, void *handle, int flags)
 {
     int fd;
 
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1);
+
     _Py_BEGIN_SUPPRESS_IPH
     fd = _open_osfhandle((intptr_t)handle, flags);
     _Py_END_SUPPRESS_IPH
@@ -200,6 +202,8 @@ msvcrt_get_osfhandle_impl(PyObject *module, int fd)
 /*[clinic end generated code: output=aca01dfe24637374 input=5fcfde9b17136aa2]*/
 {
     intptr_t handle = -1;
+    
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1);
 
     _Py_BEGIN_SUPPRESS_IPH
     handle = _get_osfhandle(fd);
@@ -412,6 +416,8 @@ msvcrt_CrtSetReportFile_impl(PyObject *module, int type, void *file)
 {
     HANDLE res;
 
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(NULL);
+
     _Py_BEGIN_SUPPRESS_IPH
     res = _CrtSetReportFile(type, file);
     _Py_END_SUPPRESS_IPH
@@ -437,6 +443,8 @@ msvcrt_CrtSetReportMode_impl(PyObject *module, int type, int mode)
 {
     int res;
 
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1);
+
     _Py_BEGIN_SUPPRESS_IPH
     res = _CrtSetReportMode(type, mode);
     _Py_END_SUPPRESS_IPH
@@ -461,6 +469,8 @@ msvcrt_set_error_mode_impl(PyObject *module, int mode)
 /*[clinic end generated code: output=ac4a09040d8ac4e3 input=046fca59c0f20872]*/
 {
     long res;
+
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1);
 
     _Py_BEGIN_SUPPRESS_IPH
     res = _set_error_mode(mode);

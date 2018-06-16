@@ -64,7 +64,7 @@ def test():
         s.match()
         s.search()
         s.pattern
-      except RuntimeError:
+      except (RuntimeError, SystemError):
         pass
 
   fullmatch_matches = []
