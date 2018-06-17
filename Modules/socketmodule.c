@@ -2754,6 +2754,8 @@ sock_setsockopt(PySocketSockObject *s, PyObject *args)
     unsigned int optlen;
     PyObject *none;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
 #ifdef AF_VSOCK
     if (s->sock_family == AF_VSOCK) {
         uint64_t vflag; // Must be set width of 64 bits
@@ -2842,6 +2844,8 @@ sock_getsockopt(PySocketSockObject *s, PyObject *args)
     int flag = 0;
     socklen_t flagsize;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (!PyArg_ParseTuple(args, "ii|i:getsockopt",
                           &level, &optname, &buflen))
         return NULL;
@@ -2906,6 +2910,8 @@ sock_bind(PySocketSockObject *s, PyObject *addro)
     sock_addr_t addrbuf;
     int addrlen;
     int res;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     if (!getsockaddrarg(s, addro, SAS2SA(&addrbuf), &addrlen))
         return NULL;
@@ -3071,6 +3077,8 @@ sock_connect(PySocketSockObject *s, PyObject *addro)
     int addrlen;
     int res;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (!getsockaddrarg(s, addro, SAS2SA(&addrbuf), &addrlen))
         return NULL;
 
@@ -3096,6 +3104,8 @@ sock_connect_ex(PySocketSockObject *s, PyObject *addro)
     sock_addr_t addrbuf;
     int addrlen;
     int res;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     if (!getsockaddrarg(s, addro, SAS2SA(&addrbuf), &addrlen))
         return NULL;
@@ -3136,6 +3146,8 @@ sock_getsockname(PySocketSockObject *s, PyObject *Py_UNUSED(ignored))
     sock_addr_t addrbuf;
     int res;
     socklen_t addrlen;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     if (!getsockaddrlen(s, &addrlen))
         return NULL;
@@ -4071,6 +4083,8 @@ sock_sendto(PySocketSockObject *s, PyObject *args)
     int addrlen, flags;
     struct sock_sendto ctx;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     flags = 0;
     arglen = PyTuple_Size(args);
     switch (arglen) {
@@ -4218,6 +4232,8 @@ sock_sendmsg(PySocketSockObject *s, PyObject *args)
     PyObject *data_arg, *cmsg_arg = NULL, *addr_arg = NULL,
         *cmsg_fast = NULL, *retval = NULL;
     struct sock_sendmsg ctx;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     if (!PyArg_ParseTuple(args, "O|OiO:sendmsg",
                           &data_arg, &cmsg_arg, &flags, &addr_arg)) {
@@ -4422,6 +4438,8 @@ sock_sendmsg_afalg(PySocketSockObject *self, PyObject *args, PyObject *kwds)
     void *controlbuf = NULL;
     static char *keywords[] = {"msg", "op", "iv", "assoclen", "flags", 0};
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (self->sock_family != AF_ALG) {
         PyErr_SetString(PyExc_OSError,
                         "algset is only supported for AF_ALG");
@@ -4592,6 +4610,8 @@ sock_ioctl(PySocketSockObject *s, PyObject *arg)
     PyObject *argO;
     DWORD recv;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (!PyArg_ParseTuple(arg, "kO:ioctl", &cmd, &argO))
         return NULL;
 
@@ -4647,6 +4667,8 @@ sock_share(PySocketSockObject *s, PyObject *arg)
     WSAPROTOCOL_INFOW info;
     DWORD processId;
     int result;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     if (!PyArg_ParseTuple(arg, "I", &processId))
         return NULL;
@@ -4875,6 +4897,8 @@ sock_initobj(PyObject *self, PyObject *args, PyObject *kwds)
     int *atomic_flag_works = NULL;
 #endif
 #endif
+
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1);
 
     if (!PyArg_ParseTupleAndKeywords(args, kwds,
                                      "|iiiO:socket", keywords,
@@ -5126,6 +5150,8 @@ static PyTypeObject sock_type = {
 static PyObject *
 socket_gethostname(PyObject *self, PyObject *unused)
 {
+  RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
 #ifdef MS_WINDOWS
     /* Don't use winsock's gethostname, as this returns the ANSI
        version of the hostname, whereas we need a Unicode string.
@@ -5192,6 +5218,8 @@ socket_sethostname(PyObject *self, PyObject *args)
     Py_buffer buf;
     int res, flag = 0;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
 #ifdef _AIX
 /* issue #18259, not declared in any useful header file */
 extern int sethostname(const char *, size_t);
@@ -5226,6 +5254,8 @@ socket_gethostbyname(PyObject *self, PyObject *args)
     char *name;
     struct sockaddr_in addrbuf;
     PyObject *ret = NULL;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     if (!PyArg_ParseTuple(args, "et:gethostbyname", "idna", &name))
         return NULL;
@@ -5411,6 +5441,8 @@ socket_gethostbyname_ex(PyObject *self, PyObject *args)
 #endif
 #endif /* HAVE_GETHOSTBYNAME_R */
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (!PyArg_ParseTuple(args, "et:gethostbyname_ex", "idna", &name))
         return NULL;
     if (setipaddr(name, SAS2SA(&addr), sizeof(addr), AF_INET) < 0)
@@ -5489,6 +5521,8 @@ socket_gethostbyaddr(PyObject *self, PyObject *args)
     int al;
     int af;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (!PyArg_ParseTuple(args, "et:gethostbyaddr", "idna", &ip_num))
         return NULL;
     af = AF_UNSPEC;
@@ -5560,6 +5594,9 @@ socket_getservbyname(PyObject *self, PyObject *args)
 {
     const char *name, *proto=NULL;
     struct servent *sp;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (!PyArg_ParseTuple(args, "s|s:getservbyname", &name, &proto))
         return NULL;
     Py_BEGIN_ALLOW_THREADS
@@ -5591,6 +5628,9 @@ socket_getservbyport(PyObject *self, PyObject *args)
     int port;
     const char *proto=NULL;
     struct servent *sp;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (!PyArg_ParseTuple(args, "i|s:getservbyport", &port, &proto))
         return NULL;
     if (port < 0 || port > 0xffff) {
@@ -5626,6 +5666,9 @@ socket_getprotobyname(PyObject *self, PyObject *args)
 {
     const char *name;
     struct protoent *sp;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (!PyArg_ParseTuple(args, "s:getprotobyname", &name))
         return NULL;
     Py_BEGIN_ALLOW_THREADS
@@ -5680,6 +5723,8 @@ socket_dup(PyObject *self, PyObject *fdobj)
 #ifdef MS_WINDOWS
     WSAPROTOCOL_INFOW info;
 #endif
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     fd = PyLong_AsSocket_t(fdobj);
     if (fd == (SOCKET_T)(-1) && PyErr_Occurred())
@@ -5740,6 +5785,8 @@ socket_socketpair(PyObject *self, PyObject *args)
     int *atomic_flag_works = NULL;
 #endif
     int ret;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
 #if defined(AF_UNIX)
     family = AF_UNIX;
@@ -6185,6 +6232,8 @@ socket_getaddrinfo(PyObject *self, PyObject *args, PyObject* kwargs)
     PyObject *all = (PyObject *)NULL;
     PyObject *idna = NULL;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     socktype = protocol = flags = 0;
     family = AF_UNSPEC;
     if (!PyArg_ParseTupleAndKeywords(args, kwargs, "OO|iiii:getaddrinfo",
@@ -6304,6 +6353,8 @@ socket_getnameinfo(PyObject *self, PyObject *args)
     int error;
     PyObject *ret = (PyObject *)NULL;
     PyObject *name;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     flags = flowinfo = scope_id = 0;
     if (!PyArg_ParseTuple(args, "Oi:getnameinfo", &sa, &flags))
@@ -6438,6 +6489,8 @@ socket_if_nameindex(PyObject *self, PyObject *arg)
     int i;
     struct if_nameindex *ni;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     ni = if_nameindex();
     if (ni == NULL) {
         PyErr_SetFromErrno(PyExc_OSError);
@@ -6478,6 +6531,8 @@ socket_if_nametoindex(PyObject *self, PyObject *args)
     PyObject *oname;
     unsigned long index;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (!PyArg_ParseTuple(args, "O&:if_nametoindex",
                           PyUnicode_FSConverter, &oname))
         return NULL;
@@ -6503,6 +6558,8 @@ socket_if_indextoname(PyObject *self, PyObject *arg)
 {
     unsigned long index;
     char name[IF_NAMESIZE + 1];
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     index = PyLong_AsUnsignedLong(arg);
     if (index == (unsigned long) -1)
@@ -6586,6 +6643,19 @@ range of values.");
 #endif    /* CMSG_LEN */
 
 
+static PyObject *
+socket_lockdown(PyObject *self, PyObject *Py_UNUSED(ignored))
+{
+    lockdown_is_enabled = 1;
+    Py_RETURN_NONE;
+}
+
+PyDoc_STRVAR(lockdown_doc,
+"_lockdown()\n\
+\n\
+Enables lockdown for the socket module.\n\
+This is an internal function. Use lockdownlib.lockdown() instead.");
+
 /* List of functions exported by this module. */
 
 static PyMethodDef socket_methods[] = {
@@ -6659,6 +6729,8 @@ static PyMethodDef socket_methods[] = {
      METH_VARARGS, CMSG_SPACE_doc},
 #endif
 #endif
+    {"_lockdown",             socket_lockdown,
+     METH_NOARGS,  lockdown_doc},
     {NULL,                      NULL}            /* Sentinel */
 };
 
