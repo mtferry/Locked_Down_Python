@@ -1148,6 +1148,26 @@ exit:
 
 #endif /* defined(_MSC_VER) */
 
+PyDoc_STRVAR(_ssl__lockdown__doc__,
+"_lockdown($module, /)\n"
+"--\n"
+"\n"
+"Enable lockdown for the SSL module.\n"
+"\n"
+"This is an internal function. Use lockdownlib.lockdown() instead.");
+
+#define _SSL__LOCKDOWN_METHODDEF    \
+    {"_lockdown", (PyCFunction)_ssl__lockdown, METH_NOARGS, _ssl__lockdown__doc__},
+
+static PyObject *
+_ssl__lockdown_impl(PyObject *module);
+
+static PyObject *
+_ssl__lockdown(PyObject *module, PyObject *Py_UNUSED(ignored))
+{
+    return _ssl__lockdown_impl(module);
+}
+
 #ifndef _SSL__SSLSOCKET_SELECTED_NPN_PROTOCOL_METHODDEF
     #define _SSL__SSLSOCKET_SELECTED_NPN_PROTOCOL_METHODDEF
 #endif /* !defined(_SSL__SSLSOCKET_SELECTED_NPN_PROTOCOL_METHODDEF) */
@@ -1175,4 +1195,4 @@ exit:
 #ifndef _SSL_ENUM_CRLS_METHODDEF
     #define _SSL_ENUM_CRLS_METHODDEF
 #endif /* !defined(_SSL_ENUM_CRLS_METHODDEF) */
-/*[clinic end generated code: output=e2417fee28666f7c input=a9049054013a1b77]*/
+/*[clinic end generated code: output=fc4f45c69665ed0e input=a9049054013a1b77]*/

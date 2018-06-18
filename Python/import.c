@@ -1074,7 +1074,7 @@ static const struct _frozen * find_frozen(PyObject *);
 static int
 is_builtin(PyObject *name)
 {
-    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(0);
 
     int i;
     for (i = 0; PyImport_Inittab[i].name != NULL; i++) {
@@ -2127,7 +2127,7 @@ exec_builtin_or_dynamic(PyObject *mod) {
     PyModuleDef *def;
     void *state;
 
-    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(0);
     
     if (!PyModule_Check(mod)) {
         return 0;

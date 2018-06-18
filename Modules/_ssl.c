@@ -1738,6 +1738,8 @@ _ssl__test_decode_cert_impl(PyObject *module, PyObject *path)
     X509 *x=NULL;
     BIO *cert;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if ((cert=BIO_new(BIO_s_file())) == NULL) {
         PyErr_SetString(PySSLErrorObject,
                         "Can't malloc memory to read file");
@@ -5071,6 +5073,8 @@ static PyObject *
 _ssl_RAND_egd_impl(PyObject *module, PyObject *path)
 /*[clinic end generated code: output=02a67c7c367f52fa input=1aeb7eb948312195]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     int bytes = RAND_egd(PyBytes_AsString(path));
     Py_DECREF(path);
     if (bytes == -1) {
@@ -5102,6 +5106,8 @@ _ssl_get_default_verify_paths_impl(PyObject *module)
     PyObject *ofile = NULL;
     PyObject *odir_env = NULL;
     PyObject *odir = NULL;
+    
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
 #define CONVERT(info, target) { \
         const char *tmp = (info); \
@@ -5454,6 +5460,22 @@ _ssl_enum_crls_impl(PyObject *module, const char *store_name)
 
 #endif /* _MSC_VER */
 
+/*[clinic input]
+_ssl._lockdown
+
+Enable lockdown for the SSL module.
+
+This is an internal function. Use lockdownlib.lockdown() instead.
+[clinic start generated code]*/
+
+static PyObject *
+_ssl__lockdown_impl(PyObject *module)
+/*[clinic end generated code: output=75fae2dad07193f9 input=c04b7ab1d05c6b42]*/
+{
+  lockdown_is_enabled = 1;
+  Py_RETURN_NONE;
+}
+
 /* List of functions exported by this module. */
 static PyMethodDef PySSL_methods[] = {
     _SSL__TEST_DECODE_CERT_METHODDEF
@@ -5467,6 +5489,7 @@ static PyMethodDef PySSL_methods[] = {
     _SSL_ENUM_CRLS_METHODDEF
     _SSL_TXT2OBJ_METHODDEF
     _SSL_NID2OBJ_METHODDEF
+    _SSL__LOCKDOWN_METHODDEF
     {NULL,                  NULL}            /* Sentinel */
 };
 
