@@ -1793,6 +1793,8 @@ _ssl__SSLSocket_getpeercert_impl(PySSLSocket *self, int binary_mode)
     X509 *peer_cert;
     PyObject *result;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (!SSL_is_init_finished(self->ssl)) {
         PyErr_SetString(PyExc_ValueError,
                         "handshake not done yet");
@@ -2614,6 +2616,8 @@ _ssl__SSLSocket_get_channel_binding_impl(PySSLSocket *self,
 {
     char buf[PySSL_CB_MAXLEN];
     size_t len;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     if (strcmp(cb_type, "tls-unique") == 0) {
         if (SSL_session_reused(self->ssl) ^ !self->socket_type) {
@@ -3682,6 +3686,8 @@ _ssl__SSLContext_load_cert_chain_impl(PySSLContext *self, PyObject *certfile,
     _PySSLPasswordInfo pw_info = { NULL, NULL, NULL, 0, 0 };
     int r;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     errno = 0;
     ERR_clear_error();
     if (keyfile == Py_None)
@@ -3870,6 +3876,8 @@ _ssl__SSLContext_load_verify_locations_impl(PySSLContext *self,
     PyObject *cafile_bytes = NULL, *capath_bytes = NULL;
     const char *cafile_buf = NULL, *capath_buf = NULL;
     int r = 0, ok = 1;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     errno = 0;
     if (cafile == Py_None)
@@ -4132,6 +4140,8 @@ static PyObject *
 _ssl__SSLContext_set_default_verify_paths_impl(PySSLContext *self)
 /*[clinic end generated code: output=0bee74e6e09deaaa input=35f3408021463d74]*/
 {
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (!SSL_CTX_set_default_verify_paths(self->ctx)) {
         _setSSLError(NULL, 0, __FILE__, __LINE__);
         return NULL;
@@ -4401,6 +4411,8 @@ _ssl__SSLContext_get_ca_certs_impl(PySSLContext *self, int binary_form)
     STACK_OF(X509_OBJECT) *objs;
     PyObject *ci = NULL, *rlist = NULL;
     int i;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     if ((rlist = PyList_New(0)) == NULL) {
         return NULL;
@@ -5168,6 +5180,8 @@ _ssl_txt2obj_impl(PyObject *module, const char *txt, int name)
     PyObject *result = NULL;
     ASN1_OBJECT *obj;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     obj = OBJ_txt2obj(txt, name ? 0 : 1);
     if (obj == NULL) {
         PyErr_Format(PyExc_ValueError, "unknown object '%.100s'", txt);
@@ -5192,6 +5206,8 @@ _ssl_nid2obj_impl(PyObject *module, int nid)
 {
     PyObject *result = NULL;
     ASN1_OBJECT *obj;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     if (nid < NID_undef) {
         PyErr_SetString(PyExc_ValueError, "NID must be positive.");
@@ -5314,6 +5330,8 @@ _ssl_enum_certificates_impl(PyObject *module, const char *store_name)
     PyObject *keyusage = NULL, *cert = NULL, *enc = NULL, *tup = NULL;
     PyObject *result = NULL;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     result = PyList_New(0);
     if (result == NULL) {
         return NULL;
@@ -5401,6 +5419,8 @@ _ssl_enum_crls_impl(PyObject *module, const char *store_name)
     PCCRL_CONTEXT pCrlCtx = NULL;
     PyObject *crl = NULL, *enc = NULL, *tup = NULL;
     PyObject *result = NULL;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     result = PyList_New(0);
     if (result == NULL) {
