@@ -119,6 +119,8 @@ pwd_getpwuid(PyObject *module, PyObject *uidobj)
     uid_t uid;
     struct passwd *p;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (!_Py_Uid_Converter(uidobj, &uid)) {
         if (PyErr_ExceptionMatches(PyExc_OverflowError))
             PyErr_Format(PyExc_KeyError,
@@ -156,6 +158,8 @@ pwd_getpwnam_impl(PyObject *module, PyObject *arg)
     struct passwd *p;
     PyObject *bytes, *retval = NULL;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if ((bytes = PyUnicode_EncodeFSDefault(arg)) == NULL)
         return NULL;
     /* check for embedded null bytes */
@@ -187,6 +191,9 @@ pwd_getpwall_impl(PyObject *module)
 {
     PyObject *d;
     struct passwd *p;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if ((d = PyList_New(0)) == NULL)
         return NULL;
     setpwent();

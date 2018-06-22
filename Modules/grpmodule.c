@@ -100,6 +100,8 @@ grp_getgrgid_impl(PyObject *module, PyObject *id)
     gid_t gid;
     struct group *p;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (!_Py_Gid_Converter(id, &gid)) {
         if (!PyErr_ExceptionMatches(PyExc_TypeError)) {
             return NULL;
@@ -149,6 +151,8 @@ grp_getgrnam_impl(PyObject *module, PyObject *name)
     struct group *p;
     PyObject *bytes, *retval = NULL;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if ((bytes = PyUnicode_EncodeFSDefault(name)) == NULL)
         return NULL;
     /* check for embedded null bytes */
@@ -180,6 +184,8 @@ grp_getgrall_impl(PyObject *module)
 {
     PyObject *d;
     struct group *p;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     if ((d = PyList_New(0)) == NULL)
         return NULL;
