@@ -13,7 +13,7 @@ def test():
                             ((fh.list,),{}),
                             ((fh.list,fh.list),{})
                             ],
-             expected_exceptions = (TypeError, ValueError, AttributeError, IndexError, RuntimeError, SyntaxError, NameError),
+             expected_exceptions = (TypeError, ValueError, AttributeError, IndexError, RuntimeError, SyntaxError, NameError, KeyError),
              dir_func = lambda i: set(dir(i))-{'__import__', 'help', 'exit', 'quit', 'input', 'history', 'open', 'breakpoint', 'license','copyright', 'print', 'credits'})
 
     fh.check(_operator,
@@ -23,6 +23,6 @@ def test():
                              ((fh.list, fh.object),{}),
                              ((fh.dict, fh.object),{})
                             ],
-             expected_exceptions = (TypeError, ValueError, IndexError, ZeroDivisionError))
+             expected_exceptions = (TypeError, ValueError, IndexError, ZeroDivisionError, KeyError))
 
 if __name__ == '__main__': fh.do_test_loop(test)

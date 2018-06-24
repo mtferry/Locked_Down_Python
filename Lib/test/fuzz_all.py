@@ -5,7 +5,7 @@ _is_subprocess = __name__ == '__main__' and len(sys.argv) > 1 and sys.argv[1] ==
 
 if not _is_subprocess:
   import os, test, subprocess
-  
+
   tests = []
   for tpath in test.__path__:
     for test in os.listdir(tpath):
@@ -46,8 +46,7 @@ if _is_subprocess:
     lockdownlib.lockdown()
     for i in range(1,99999):   
       for _ in range(999999):
-        # m = rnd.choice(list(sys.modules.values()))   Someday. Not yet though.
-        m = rnd.choice(safe_modules)
+        m = rnd.choice(list(sys.modules.values()))
         a = getattr(m, rnd.choice(dir(m)))
         try:
           a(*fargs) if callable(a) else a
