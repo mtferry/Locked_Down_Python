@@ -23,10 +23,10 @@ def list(depth_limit=1):
   return [object(depth_limit) for _ in range(rand.randint(0,9))]
 
 def tuple():
-  return tuple(list())
+  return builtins.tuple(list())
 
 def dict():
-  return {k:v for k,v in zip(map(str, tuple()),tuple())}
+  return {k:v for k,v in zip(map(builtins.str, tuple()),tuple())}
 
 def function():
   def f(*a, **k):
