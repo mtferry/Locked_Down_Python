@@ -224,6 +224,8 @@ winconsoleio_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 {
     winconsoleio *self;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     assert(type != NULL && type->tp_alloc != NULL);
 
     self = (winconsoleio *) type->tp_alloc(type, 0);
@@ -268,6 +270,8 @@ _io__WindowsConsoleIO___init___impl(winconsoleio *self, PyObject *nameobj,
     int rwa = 0;
     int fd = -1;
     int fd_is_own = 0;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     assert(PyWindowsConsoleIO_Check(self));
     if (self->handle >= 0) {

@@ -510,6 +510,9 @@ static PyObject*
 PyIntl_dgettext(PyObject* self, PyObject *args)
 {
     char *domain, *in;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (!PyArg_ParseTuple(args, "zs", &domain, &in))
         return 0;
     return PyUnicode_DecodeLocale(dgettext(domain, in), NULL);
@@ -524,6 +527,9 @@ PyIntl_dcgettext(PyObject *self, PyObject *args)
 {
     char *domain, *msgid;
     int category;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (!PyArg_ParseTuple(args, "zsi", &domain, &msgid, &category))
         return 0;
     return PyUnicode_DecodeLocale(dcgettext(domain,msgid,category), NULL);
@@ -537,6 +543,9 @@ static PyObject*
 PyIntl_textdomain(PyObject* self, PyObject* args)
 {
     char *domain;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (!PyArg_ParseTuple(args, "z", &domain))
         return 0;
     domain = textdomain(domain);
@@ -556,6 +565,9 @@ PyIntl_bindtextdomain(PyObject* self,PyObject*args)
 {
     char *domain, *dirname, *current_dirname;
     PyObject *dirname_obj, *dirname_bytes = NULL, *result;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (!PyArg_ParseTuple(args, "sO", &domain, &dirname_obj))
         return 0;
     if (!strlen(domain)) {
@@ -590,6 +602,9 @@ static PyObject*
 PyIntl_bind_textdomain_codeset(PyObject* self,PyObject*args)
 {
     char *domain,*codeset;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     if (!PyArg_ParseTuple(args, "sz", &domain, &codeset))
         return NULL;
     codeset = bind_textdomain_codeset(domain, codeset);

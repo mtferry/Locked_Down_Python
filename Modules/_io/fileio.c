@@ -172,6 +172,8 @@ fileio_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 {
     fileio *self;
 
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+
     assert(type != NULL && type->tp_alloc != NULL);
 
     self = (fileio *) type->tp_alloc(type, 0);
@@ -241,6 +243,8 @@ _io_FileIO___init___impl(fileio *self, PyObject *nameobj, const char *mode,
     struct _Py_stat_struct fdfstat;
     int fstat_result;
     int async_err = 0;
+
+    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
 
     assert(PyFileIO_Check(self));
     if (self->fd >= 0) {
