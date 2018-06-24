@@ -18,7 +18,7 @@ LDP introduces a new module, lockdownlib, which can be used to enable lockdown::
     import lockdownlib
     lockdownlib.lockdown()
 
-Lockdown disables any functions that enable reading or modifying the file system (including import), processes or the operating system. It also prevents code from accessing the memory addresses and paths of objects and modules. Lockdown is not an atomic operation and any threads that may potentially execute unsafe code should wait until after lockdown completes before doing so. For a longer (though not comprehensive) list of functions affected by lockdown, see the lockdown `unit test <https://github.com/mtferry/Locked_Down_Python/blob/master/Lib/test/test_lockdown.py>`_ and `sub-test <https://github.com/mtferry/Locked_Down_Python/blob/master/Lib/test/lockdown_subtest.py>`_.
+Lockdown disables any functions that enable reading or modifying the file system (including import), processes or the operating system. Attempting to call an unsafe functions in lockdown will raise ``RuntimeError: lockdown is enabled``. It also prevents code from accessing the memory addresses and paths of objects and modules. Lockdown is not an atomic operation and any threads that may potentially execute unsafe code should wait until after lockdown completes before doing so. For a longer (though not comprehensive) list of functions affected by lockdown, see the lockdown `unit test <https://github.com/mtferry/Locked_Down_Python/blob/master/Lib/test/test_lockdown.py>`_ and `sub-test <https://github.com/mtferry/Locked_Down_Python/blob/master/Lib/test/lockdown_subtest.py>`_.
 
 
 Modules
@@ -37,6 +37,13 @@ After enabling lockdown, a set of imported unsafe modules can be returned via::
   set(sys.modules)-set(lockdownlib.SAFE_MODULES)
 
 If no unsafe modules are imported, the result should be an empty set. Note that a malicious module could remove itself from sys.modules so, while this is a useful technique for debugging, it is not foolproof. The only way to verify the safety of a module is by checking its source. However, even seemingly safe modules, particularly C modules, can be unsafe if their underlying code enables unsafe behavior (such as buffer overflows) due insecure code.
+
+
+Testing
+^^^^^^^
+
+LDP has a regression test which can be run individually via ``python -m test test_lockdown`` or as part of the entire regression test suite via ``python -m test``. LDP also includes several fuzz tests which can be run collectivly via ``python -m test.fuzz_all`` or individually such as ``python -m test.fuzz_abc``. The fuzz tests will loop near infinitely. The tests are considered passsing unless they segfault. New fuzz tests can be written using the test.fuzzhelper module. Lib/test/fuzz_builtins.py and the other fuzz tests can be used as examples of how to use fuzzhelper.
+
 
 Demo
 ^^^^
