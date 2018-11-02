@@ -203,7 +203,7 @@ msvcrt_get_osfhandle_impl(PyObject *module, int fd)
 {
     intptr_t handle = -1;
     
-    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1);
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(NULL);
 
     _Py_BEGIN_SUPPRESS_IPH
     handle = _get_osfhandle(fd);

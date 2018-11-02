@@ -244,7 +244,7 @@ _io_FileIO___init___impl(fileio *self, PyObject *nameobj, const char *mode,
     int fstat_result;
     int async_err = 0;
 
-    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1);
 
     assert(PyFileIO_Check(self));
     if (self->fd >= 0) {

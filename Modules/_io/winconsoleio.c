@@ -271,7 +271,7 @@ _io__WindowsConsoleIO___init___impl(winconsoleio *self, PyObject *nameobj,
     int fd = -1;
     int fd_is_own = 0;
 
-    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(-1);
 
     assert(PyWindowsConsoleIO_Check(self));
     if (self->handle >= 0) {

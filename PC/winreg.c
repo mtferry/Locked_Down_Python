@@ -309,7 +309,7 @@ static PyHKEYObject *
 winreg_HKEYType___enter___impl(PyHKEYObject *self)
 /*[clinic end generated code: output=52c34986dab28990 input=c40fab1f0690a8e2]*/
 {
-    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(NULL);
 
     Py_XINCREF(self);
     return self;
@@ -834,7 +834,7 @@ winreg_ConnectRegistry_impl(PyObject *module, Py_UNICODE *computer_name,
                             HKEY key)
 /*[clinic end generated code: output=5ab79d02aa3167b4 input=5f98a891a347e68e]*/
 {
-    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(NULL);
 
     HKEY retKey;
     long rc;
@@ -872,7 +872,7 @@ static HKEY
 winreg_CreateKey_impl(PyObject *module, HKEY key, Py_UNICODE *sub_key)
 /*[clinic end generated code: output=9c81d4095527c927 input=3cdd1622488acea2]*/
 {
-    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(NULL);
 
     HKEY retKey;
     long rc;
@@ -914,7 +914,7 @@ winreg_CreateKeyEx_impl(PyObject *module, HKEY key, Py_UNICODE *sub_key,
                         int reserved, REGSAM access)
 /*[clinic end generated code: output=b9fce6dc5c4e39b1 input=42c2b03f98406b66]*/
 {
-    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(NULL);
 
     HKEY retKey;
     long rc;
@@ -1339,7 +1339,7 @@ winreg_OpenKey_impl(PyObject *module, HKEY key, Py_UNICODE *sub_key,
                     int reserved, REGSAM access)
 /*[clinic end generated code: output=a905f1b947f3ce85 input=098505ac36a9ae28]*/
 {
-    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
+    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(NULL);
 
     HKEY retKey;
     long rc;
