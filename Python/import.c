@@ -237,7 +237,6 @@ static PyObject *
 _imp_lock_held_impl(PyObject *module)
 /*[clinic end generated code: output=8b89384b5e1963fc input=9b088f9b217d9bdf]*/
 {
-    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     return PyBool_FromLong(import_lock_thread != PYTHREAD_INVALID_THREAD_ID);
 }
 
@@ -254,7 +253,6 @@ static PyObject *
 _imp_acquire_lock_impl(PyObject *module)
 /*[clinic end generated code: output=1aff58cb0ee1b026 input=4a2d4381866d5fdc]*/
 {
-    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     _PyImport_AcquireLock();
     Py_RETURN_NONE;
 }
@@ -271,7 +269,6 @@ static PyObject *
 _imp_release_lock_impl(PyObject *module)
 /*[clinic end generated code: output=7faab6d0be178b0a input=934fb11516dd778b]*/
 {
-    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     if (_PyImport_ReleaseLock() < 0) {
         PyErr_SetString(PyExc_RuntimeError,
                         "not holding the import lock");
@@ -1074,8 +1071,6 @@ static const struct _frozen * find_frozen(PyObject *);
 static int
 is_builtin(PyObject *name)
 {
-    RAISE_EXCEPTION_AND_RETURN_IF_LOCKDOWN_IS_ENABLED(0);
-
     int i;
     for (i = 0; PyImport_Inittab[i].name != NULL; i++) {
         if (_PyUnicode_EqualToASCIIString(name, PyImport_Inittab[i].name)) {
@@ -1696,11 +1691,6 @@ PyImport_ImportModuleLevelObject(PyObject *name, PyObject *globals,
     PyObject *package = NULL;
     PyInterpreterState *interp = PyThreadState_GET()->interp;
     int has_from;
-
-    if (lockdown_is_enabled) {
-      PyErr_SetString(PyExc_RuntimeError, LOCKDOWN_EXCEPTION_STRING);
-      goto error;
-    }
 
     if (name == NULL) {
         PyErr_SetString(PyExc_ValueError, "Empty module name");

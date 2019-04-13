@@ -6,7 +6,7 @@ def lockdown():
   sys.modules['os'].environ.clear()
   for m in sys.modules.values():
     try: m._lockdown()
-    except AttributeError: pass
+    except (AttributeError, TypeError): pass
     for a in ['__file__', '__cached__', '__spec__', '__loader__', '_default_localedir', '_srcfile']:
       try: setattr(m, a, None)
       except AttributeError: pass

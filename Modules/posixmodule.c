@@ -12975,8 +12975,6 @@ error:
 PyObject *
 PyOS_FSPath(PyObject *path)
 {
-    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
-
     /* For error message reasons, this function is manually inlined in
        path_converter(). */
     _Py_IDENTIFIER(__fspath__);

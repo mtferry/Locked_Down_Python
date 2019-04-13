@@ -4735,8 +4735,6 @@ import_name(PyFrameObject *f, PyObject *name, PyObject *fromlist, PyObject *leve
     _Py_IDENTIFIER(__import__);
     PyObject *import_func, *res;
     PyObject* stack[5];
-
-    RAISE_EXCEPTION_IF_LOCKDOWN_IS_ENABLED;
     
     import_func = _PyDict_GetItemId(f->f_builtins, &PyId___import__);
     if (import_func == NULL) {

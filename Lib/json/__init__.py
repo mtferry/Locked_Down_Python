@@ -361,10 +361,19 @@ def loads(s, *, encoding=None, cls=None, object_hook=None, parse_float=None,
     return cls(**kw).decode(s)
 
 def _lockdown():
-  json = codecs.sys.modules['json'] # Evil hack to avoid the cost of another import
-  json.decoder.scanstring = json.decoder.py_scanstring
-  json.encoder.encode_basestring_ascii = json.encoder.py_encode_basestring_ascii
-  json.encoder.encode_basestring = json.encoder.py_encode_basestring
-  json.encoder.c_make_encoder = None
+  import json
+  
+  json.scanner.c_make_scanner = None
   json.scanner.make_scanner = json.scanner.py_make_scanner
-  _default_decoder.scan_once = json.scanner.make_scanner(_default_decoder)
+  
+  json.decoder.c_scanstring = None
+  json.decoder.scanstring = json.decoder.py_scanstring
+  
+  json.encoder.c_encode_basestring = None
+  json.encoder.c_encode_basestring_ascii = None
+  json.encoder.c_make_encoder = None
+  json.encoder.encode_basestring = json.encoder.py_encode_basestring
+  json.encoder.encode_basestring_ascii = json.encoder.py_encode_basestring_ascii
+
+  json._default_decoder = JSONDecoder(object_hook=None, object_pairs_hook=None)
+  json._default_encoder = JSONEncoder()
