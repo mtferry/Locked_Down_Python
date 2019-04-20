@@ -309,7 +309,10 @@ class LogRecord(object):
                 except Exception: #pragma: no cover
                     pass
         if logProcesses and hasattr(os, 'getpid'):
-            self.process = os.getpid()
+            try:
+              self.process = os.getpid()
+            except RuntimeError:
+              self.process = None
         else:
             self.process = None
 
